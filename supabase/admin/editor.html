@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Ndarama Blog</title>
+  <link rel="icon" type="image/jpeg" href="/assets/img/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,900;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/supabase/admin/css/admin.css" />
+</head>
+<body>
+
+  <!-- ===== LOGIN SCREEN ===== -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-box">
+      <div class="login-brand">
+        <img src="/assets/img/logo.jpg" alt="Ndarama" width="56" height="56" />
+        <h1>Blog Editor</h1>
+        <p>Ndarama High School</p>
+      </div>
+      <form id="loginForm" class="login-form">
+        <div class="form-field">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" value="admin" required />
+        </div>
+        <div class="form-field">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter password" required />
+        </div>
+        <button type="submit" class="btn-cta">Login →</button>
+        <p id="loginError" class="login-error"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN PANEL ===== -->
+  <div id="adminPanel" class="admin-panel" style="display:none;">
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <div class="admin-brand">
+          <img src="/assets/img/logo.jpg" alt="Ndarama" width="36" height="36" />
+          <span>Blog Editor</span>
+        </div>
+        <div class="admin-actions">
+          <button id="newArticleBtn" class="btn-cta">+ New Article</button>
+          <button id="logoutBtn" class="btn-ghost">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <div class="admin-container">
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number" id="totalArticles">0</span>
+            <span class="stat-label">Total Articles</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="featuredCount">0</span>
+            <span class="stat-label">Featured</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="mediaCount">0</span>
+            <span class="stat-label">Media Files</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" id="categoryCount">0</span>
+            <span class="stat-label">Categories</span>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="article-list-header">
+          <h2>All Articles</h2>
+          <div class="article-filters">
+            <input type="text" id="searchInput" placeholder="Search articles..." />
+            <select id="categoryFilter"><option value="">All Categories</option></select>
+            <select id="statusFilter">
+              <option value="">All Status</option>
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="article-list" id="articleList">
+          <!-- Rendered by JavaScript -->
+        </div>
+
+      </div>
+    </main>
+
+    <!-- ===== ARTICLE MODAL ===== -->
+    <div id="articleModal" class="modal" style="display:none;">
+      <div class="modal-content modal-large">
+        <div class="modal-header">
+          <h2 id="modalTitle">New Article</h2>
+          <button class="modal-close" id="modalClose">✕</button>
+        </div>
+        <form id="articleForm">
+          <input type="hidden" id="articleId" />
+
+          <div class="form-row">
+            <div class="form-field full">
+              <label for="articleTitle">Title *</label>
+              <input type="text" id="articleTitle" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="articleCategory">Category</label>
+              <select id="articleCategory">
+                <option value="general">General</option>
+                <option value="album">🎵 Album</option>
+                <option value="achievement">🏆 Achievement</option>
+                <option value="infrastructure">🔧 Infrastructure</option>
+                <option value="arts">🎶 Arts</option>
+                <option value="archive">📚 Archive</option>
+                <option value="sports">⚽ Sports</option>
+                <option value="events">📅 Events</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="articleCategoryLabel">Label (display)</label>
+              <input type="text" id="articleCategoryLabel" placeholder="e.g. 🏆 Achievement" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="articleDate">Date</label>
+              <input type="date" id="articleDate" />
+            </div>
+            <div class="form-field">
+              <label for="articleAuthor">Author</label>
+              <input type="text" id="articleAuthor" placeholder="Author name" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="articleFeatured">Featured</label>
+              <select id="articleFeatured">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="articleStatus">Status</label>
+              <select id="articleStatus">
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+                <option value="archived">Archived</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field full">
+              <label for="articleSlug">Slug (URL)</label>
+              <input type="text" id="articleSlug" placeholder="auto-generated" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field full">
+              <label for="articleTags">Tags (comma separated)</label>
+              <input type="text" id="articleTags" placeholder="education, music, achievement" />
+            </div>
+          </div>
+
+          <!-- Media Manager -->
+          <div class="form-row">
+            <div class="form-field full">
+              <label>Media Attachments</label>
+              <div class="media-manager">
+                <div class="media-upload-zone">
+                  <button type="button" id="addMediaBtn" class="btn-secondary">+ Add Image</button>
+                  <button type="button" id="addVideoBtn" class="btn-secondary">+ Add Video Link</button>
+                  <button type="button" id="addFileBtn" class="btn-secondary">+ Add File</button>
+                </div>
+                <div class="media-list" id="mediaList">
+                  <!-- rendered by JS -->
+                </div>
+              </div>
+              <input type="file" id="fileInput" accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip" style="display:none;" multiple />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field full">
+              <label for="articleExcerpt">Excerpt (summary)</label>
+              <textarea id="articleExcerpt" rows="2"></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field full">
+              <label for="articleContent">Content *</label>
+              <textarea id="articleContent" rows="12" required></textarea>
+              <small style="color: var(--gray); font-size: 0.75rem;">HTML allowed: &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;blockquote&gt;, &lt;h2&gt;, &lt;h3&gt;</small>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" id="modalCancel">Cancel</button>
+            <button type="submit" class="btn-cta" id="modalSave">Save Article</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- DELETE MODAL -->
+    <div id="deleteModal" class="modal" style="display:none;">
+      <div class="modal-content delete-modal">
+        <div class="modal-header">
+          <h2>Delete Article</h2>
+          <button class="modal-close" id="deleteClose">✕</button>
+        </div>
+        <p>Are you sure you want to delete "<span id="deleteTitle"></span>"? This action cannot be undone.</p>
+        <div class="form-actions">
+          <button class="btn-secondary" id="deleteCancel">Cancel</button>
+          <button class="btn-danger" id="deleteConfirm">Delete</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src ="/supabase/admin/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News — Ndarama High School</title>
+  <meta name="description" content="Latest news from Ndarama High School, Masvingo — achievements, events, and stories." />
+  <link rel="icon" type="image/jpeg" href="assets/img/logo.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,900;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       ROOT VARIABLES & RESET — (same as index + about)
+       ============================================================ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --gold: #D4AF37;
+      --gold-light: #f3e08e;
+      --cherry: #8B0000;
+      --mahogany: #5C2E16;
+      --dark: #0f0e0c;
+      --dark-soft: #1e1b17;
+      --light: #f9f7f2;
+      --gray: #6b6a67;
+      --white: #ffffff;
+      --font-serif: 'Playfair Display', serif;
+      --font-sans: 'Inter', sans-serif;
+      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 12px 40px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.12);
+      --shadow-glow: 0 8px 32px rgba(212, 175, 55, 0.25);
+      --radius-card: 16px;
+      --radius-pill: 50px;
+      --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    ul,
+    ol {
+      list-style: none;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============================================================
+       SKIP LINK
+       ============================================================ */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--dark);
+      padding: 12px 24px;
+      border-radius: 0 0 8px 8px;
+      font-weight: 700;
+      z-index: 1000;
+      transition: top 0.3s;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ============================================================
+       NAVIGATION (identical)
+       ============================================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(15, 14, 12, 0.85);
+      backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 10px 0;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--white);
+    }
+    .brand-mark-badge img {
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+    }
+    .brand-name {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+    .brand-name span {
+      display: block;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.9;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--white);
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+    .btn-cta {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 10px 28px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all var(--transition);
+      box-shadow: var(--shadow-glow);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-cta:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(212, 175, 55, 0.35);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      padding: 10px 28px;
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 28px;
+      height: 2.5px;
+      background: var(--white);
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+    @media (max-width: 900px) {
+      .hamburger {
+        display: flex;
+      }
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 14, 12, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 24px;
+        gap: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: clip-path 0.4s ease;
+        pointer-events: none;
+      }
+      .nav-links.open {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        pointer-events: all;
+      }
+      .nav-links a {
+        font-size: 1.1rem;
+        padding: 8px 0;
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .nav-links .btn-cta {
+        width: 100%;
+        justify-content: center;
+        margin-top: 8px;
+      }
+    }
+
+    /* ============================================================
+       HERO — MINIMALIST
+       ============================================================ */
+    .hero-news {
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      background: var(--dark);
+      overflow: hidden;
+    }
+
+    .hero-news .bg-texture {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.15;
+      z-index: 0;
+      filter: grayscale(0.6) brightness(0.6);
+    }
+
+    .hero-news::after {
+      content: '';
+      position: absolute;
+      right: -10%;
+      top: -20%;
+      width: 50%;
+      height: 140%;
+      background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.06), transparent 70%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-news .container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-text {
+      padding: 2rem 0;
+    }
+
+    .hero-text .label {
+      display: inline-block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 4px 16px;
+      border-radius: 50px;
+    }
+
+    .hero-text h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--white);
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .hero-text h1 .gold {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .hero-text .accent-line {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      margin: 16px 0 20px 0;
+      border-radius: 4px;
+    }
+
+    .hero-text .sub {
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 460px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .hero-text .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .hero-text .btn-ghost {
+      background: transparent;
+      color: var(--white);
+      padding: 10px 28px;
+      border-radius: var(--radius-pill);
+      font-weight: 500;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero-text .btn-ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      min-height: 300px;
+    }
+
+    .hero-visual .geo-ring {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      border: 1px solid rgba(212, 175, 55, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: geoFloat 8s ease-in-out infinite alternate;
+    }
+
+    .hero-visual .geo-ring::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 1px solid rgba(212, 175, 55, 0.08);
+      animation: geoFloat 6s ease-in-out infinite alternate-reverse;
+    }
+
+    .hero-visual .geo-core {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.3), rgba(212, 175, 55, 0.05));
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      box-shadow: 0 0 60px rgba(212, 175, 55, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      color: rgba(212, 175, 55, 0.15);
+      font-weight: 300;
+    }
+
+    .hero-visual .geo-line {
+      position: absolute;
+      width: 140px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.4), transparent);
+      transform: rotate(45deg) translateX(60px);
+      top: 50%;
+      right: -20%;
+    }
+
+    .hero-visual .geo-line-2 {
+      position: absolute;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.2), transparent);
+      transform: rotate(-30deg) translateX(-20px);
+      bottom: 20%;
+      left: 10%;
+    }
+
+    @keyframes geoFloat {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+      100% {
+        transform: translateY(-16px) rotate(4deg);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        text-align: center;
+      }
+      .hero-text .accent-line {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-text .sub {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-text .actions {
+        justify-content: center;
+      }
+      .hero-visual {
+        min-height: 200px;
+      }
+      .hero-visual .geo-ring {
+        width: 200px;
+        height: 200px;
+      }
+      .hero-visual .geo-ring::before {
+        width: 150px;
+        height: 150px;
+      }
+      .hero-visual .geo-core {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+      }
+      .hero-visual .geo-line,
+      .hero-visual .geo-line-2 {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-news {
+        min-height: 60vh;
+        padding: 4rem 0;
+      }
+      .hero-visual {
+        display: none;
+      }
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-text h1 {
+        font-size: clamp(2rem, 10vw, 2.8rem);
+      }
+      .hero-text .label {
+        font-size: 0.6rem;
+        padding: 3px 12px;
+      }
+    }
+
+    /* ============================================================
+       SECTIONS
+       ============================================================ */
+    section {
+      padding: clamp(4rem, 10vh, 8rem) 0;
+    }
+    .section-head {
+      margin-bottom: 48px;
+    }
+    .section-head h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+    }
+    .section-head p {
+      font-size: 1.1rem;
+      color: var(--gray);
+      margin-top: 8px;
+      max-width: 600px;
+    }
+    .section-head.centered {
+      text-align: center;
+    }
+    .section-head.centered p {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--gold);
+      border-bottom: 1.5px solid transparent;
+      transition: all var(--transition);
+      padding-bottom: 2px;
+    }
+    .link-arrow:hover {
+      border-bottom-color: var(--gold);
+      gap: 14px;
+    }
+
+    /* ============================================================
+       NEWS SECTION
+       ============================================================ */
+    .news-section {
+      background: var(--white);
+      padding: clamp(4rem, 10vh, 6rem) 0;
+    }
+
+    .news-layout {
+      display: grid;
+      grid-template-columns: 2.5fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .news-featured {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 3rem;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .news-featured:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .news-featured .img-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--cherry);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 1.5rem;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      overflow: hidden;
+    }
+    .news-featured .img-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .news-featured .img-placeholder .placeholder-tag {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 0.5rem 1.5rem;
+      border-radius: 30px;
+      backdrop-filter: blur(2px);
+    }
+    .news-featured .nf-body {
+      padding: 2rem 2.5rem;
+    }
+    .news-featured .nf-body .category {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold);
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      margin-bottom: 0.5rem;
+    }
+    .news-featured .nf-body h3 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      color: var(--mahogany);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    .news-featured .nf-body p {
+      font-size: 1rem;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .news-featured .nf-body .date {
+      font-size: 0.75rem;
+      color: var(--gray);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0.7;
+    }
+    .news-featured .nf-body .date svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .filter-bar select,
+    .filter-bar input {
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      border: 2px solid rgba(0, 0, 0, 0.06);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      background: var(--white);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .filter-bar select:focus,
+    .filter-bar input:focus {
+      border-color: var(--gold);
+    }
+    .filter-bar input {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .news-card {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .news-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .news-card .img-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--cherry);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 0.75rem;
+      text-align: center;
+      padding: 1rem;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      overflow: hidden;
+    }
+    .news-card .img-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .news-card .img-placeholder .placeholder-tag {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      backdrop-filter: blur(2px);
+    }
+    .news-card .nc-body {
+      padding: 1.2rem 1.5rem 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .news-card .nc-body .category {
+      display: inline-block;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 0.15rem 0.7rem;
+      border-radius: 20px;
+      margin-bottom: 0.4rem;
+      align-self: flex-start;
+    }
+    .news-card .nc-body .category.album {
+      background: rgba(139, 0, 0, 0.08);
+      color: var(--cherry);
+    }
+    .news-card .nc-body .category.achievement {
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold);
+    }
+    .news-card .nc-body .category.infrastructure {
+      background: rgba(92, 46, 22, 0.08);
+      color: var(--mahogany);
+    }
+    .news-card .nc-body .category.arts {
+      background: rgba(92, 46, 22, 0.08);
+      color: var(--mahogany);
+    }
+    .news-card .nc-body .category.archive {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--gray);
+    }
+    .news-card .nc-body .category.general {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--gray);
+    }
+
+    .news-card .nc-body h4 {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: var(--mahogany);
+      margin-bottom: 0.3rem;
+      line-height: 1.3;
+    }
+    .news-card .nc-body p {
+      font-size: 0.9rem;
+      color: var(--gray);
+      line-height: 1.5;
+      margin-bottom: 0.8rem;
+      flex: 1;
+    }
+    .news-card .nc-body .date {
+      font-size: 0.7rem;
+      color: var(--gray);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: auto;
+      opacity: 0.7;
+    }
+    .news-card .nc-body .date svg {
+      width: 12px;
+      height: 12px;
+      fill: currentColor;
+    }
+    .news-card .nc-body .read-more {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--cherry);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.5rem;
+      transition: color var(--transition);
+    }
+    .news-card .nc-body .read-more:hover {
+      color: var(--gold);
+    }
+    .news-card .nc-body .read-more svg {
+      transition: transform var(--transition);
+    }
+    .news-card .nc-body .read-more:hover svg {
+      transform: translateX(4px);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--gray);
+      grid-column: 1 / -1;
+    }
+    .empty-state .icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+    .empty-state h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--mahogany);
+    }
+
+    /* Sidebar */
+    .news-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .sidebar-widget {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .sidebar-widget h4 {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: var(--mahogany);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid rgba(139, 0, 0, 0.08);
+    }
+    .sidebar-widget ul li {
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+    .sidebar-widget ul li:last-child {
+      border-bottom: none;
+    }
+    .sidebar-widget ul li a {
+      font-size: 0.9rem;
+      color: var(--dark-soft);
+      transition: color var(--transition);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar-widget ul li a:hover {
+      color: var(--cherry);
+    }
+    .sidebar-widget ul li a .count {
+      font-size: 0.75rem;
+      color: var(--gray);
+      font-weight: 600;
+      opacity: 0.5;
+    }
+
+    /* Pagination */
+    .news-pagination {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .news-pagination a {
+      padding: 0.4rem 1.2rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--mahogany);
+      background: var(--white);
+      border: 2px solid rgba(0, 0, 0, 0.08);
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .news-pagination a:hover {
+      background: var(--cherry);
+      color: var(--white);
+      border-color: var(--cherry);
+    }
+    .news-pagination a.active {
+      background: var(--cherry);
+      color: var(--white);
+      border-color: var(--cherry);
+    }
+    .news-pagination a.disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    @media (max-width: 992px) {
+      .news-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .news-sidebar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .news-section {
+        padding: 3rem 0 4rem;
+      }
+      .news-featured .nf-body {
+        padding: 1.5rem;
+      }
+      .news-featured .nf-body h3 {
+        font-size: 1.3rem;
+      }
+      .news-sidebar {
+        grid-template-columns: 1fr;
+      }
+      .news-pagination {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* CTA */
+    .cta {
+      background: linear-gradient(135deg, var(--dark), var(--mahogany));
+      color: var(--white);
+      text-align: center;
+      border-radius: var(--radius-card) var(--radius-card) 0 0;
+    }
+    .cta .serif {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .cta p {
+      max-width: 600px;
+      margin: 0 auto 32px;
+      opacity: 0.85;
+      font-size: 1.1rem;
+    }
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+    .cta .btn-outline {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .cta .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark-soft);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 48px 0 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr;
+      gap: 48px;
+      margin-bottom: 40px;
+    }
+    .footer-brand h4 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--white);
+      margin-top: 8px;
+    }
+    .footer-brand p {
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+    .footer-grid h5 {
+      color: var(--white);
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 1rem;
+    }
+    .footer-grid ul li {
+      margin-bottom: 10px;
+    }
+    .footer-grid ul li a {
+      transition: color var(--transition);
+    }
+    .footer-grid ul li a:hover {
+      color: var(--gold);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.9rem;
+    }
+    .socials {
+      display: flex;
+      gap: 16px;
+    }
+    .socials a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      transition: all var(--transition);
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .socials a:hover {
+      background: var(--gold);
+      color: var(--dark);
+      transform: translateY(-3px);
+    }
+    .socials a svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-stagger>* {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-stagger.visible>* {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-stagger.visible>*:nth-child(1) {
+      transition-delay: 0.05s;
+    }
+    .reveal-stagger.visible>*:nth-child(2) {
+      transition-delay: 0.12s;
+    }
+    .reveal-stagger.visible>*:nth-child(3) {
+      transition-delay: 0.19s;
+    }
+    .reveal-stagger.visible>*:nth-child(4) {
+      transition-delay: 0.26s;
+    }
+    .reveal-stagger.visible>*:nth-child(5) {
+      transition-delay: 0.33s;
+    }
+    .reveal-stagger.visible>*:nth-child(6) {
+      transition-delay: 0.40s;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/css/chatbot.css" />
+</head>
+
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ============================================================
+  NAV
+  ============================================================ -->
+  <header class="nav" id="siteNav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
+        <span class="brand-name">Ndarama High<span>Spring of Knowledge and Power</span></span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="student-life.html">Student Life</a>
+        <a href="news.html" class="active">News</a>
+        <a href="contact.html">Contact</a>
+        <a href="contact.html" class="btn-cta">Book a Tour</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================================
+    HERO
+    ============================================================ -->
+    <section class="hero-news" id="hero-news">
+      <img
+        src="https://ndaramahigh.co.zw/images/reception-block.webp"
+        alt="Ndarama High School campus"
+        fetchpriority="high"
+        decoding="async"
+        class="bg-texture"
+      />
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-text">
+            <span class="label">News</span>
+            <h1>Stories from the <span class="gold">Ndarama family</span>.</h1>
+            <div class="accent-line"></div>
+            <p class="sub">From record-breaking results to cultural milestones — catch up on the latest achievements, events, and moments that define life at Ndarama High School.</p>
+            <div class="actions">
+              <a href="#news" class="btn-cta">Browse Stories</a>
+              <a href="contact.html" class="btn-ghost">Subscribe</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="geo-ring">
+              <div class="geo-core">✦</div>
+              <span class="geo-line"></span>
+              <span class="geo-line-2"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+    NEWS SECTION
+    ============================================================ -->
+    <section class="news-section" id="news">
+      <div class="container">
+        <div class="news-layout">
+
+          <!-- ===== MAIN CONTENT ===== -->
+          <div>
+
+            <!-- Featured Story -->
+            <div class="news-featured reveal" id="featuredContainer">
+              <div class="img-placeholder">
+                <span class="placeholder-tag">Loading featured story...</span>
+              </div>
+              <div class="nf-body">
+                <span class="category">Loading...</span>
+                <h3>Loading article...</h3>
+                <p>Please wait while we load the latest news.</p>
+                <div class="date">
+                  <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                  Loading...
+                </div>
+              </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+              <select id="categoryFilter">
+                <option value="">All Categories</option>
+              </select>
+              <input type="text" id="searchInput" placeholder="Search articles..." />
+            </div>
+
+            <!-- News Grid -->
+            <div class="news-grid reveal-stagger" id="newsGrid">
+              <!-- Articles will be rendered here -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="news-pagination reveal" id="paginationContainer">
+              <!-- Rendered by JavaScript -->
+            </div>
+
+          </div>
+
+          <!-- ===== SIDEBAR ===== -->
+          <aside class="news-sidebar">
+
+            <!-- Categories Widget -->
+            <div class="sidebar-widget reveal" id="categoriesWidget">
+              <h4>Categories</h4>
+              <ul id="categoriesList">
+                <li><span style="color:var(--gray);">Loading...</span></li>
+              </ul>
+            </div>
+
+            <!-- Recent Posts Widget -->
+            <div class="sidebar-widget reveal" id="recentPostsWidget">
+              <h4>Recent Posts</h4>
+              <ul id="recentPostsList">
+                <li><span style="color:var(--gray);">Loading...</span></li>
+              </ul>
+            </div>
+
+            <!-- Archive Widget -->
+            <div class="sidebar-widget reveal" id="archiveWidget">
+              <h4>Archive</h4>
+              <ul id="archiveList">
+                <li><a href="#">2026 <span class="count">(0)</span></a></li>
+                <li><a href="#">2025 <span class="count">(0)</span></a></li>
+                <li><a href="#">2024 <span class="count">(0)</span></a></li>
+              </ul>
+            </div>
+
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+    CTA
+    ============================================================ -->
+    <section class="cta">
+      <div class="container reveal">
+        <h2 class="serif">Get news from Ndarama.</h2>
+        <p>Reach out to be added to our community newsletter and event updates.</p>
+        <div class="cta-actions">
+          <a href="contact.html" class="btn-cta">Subscribe to Newsletter</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+  FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
+          <h4>Ndarama High School</h4>
+          <p>Spring of Knowledge and Power</p>
+        </div>
+        <div>
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="student-life.html">Student Life</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Contact</h5>
+          <ul>
+            <li>P.O. Box 9010, Masvingo, Zimbabwe</li>
+            <li>+263 39 225 2984</li>
+            <li>info@ndarama.ac.zw</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Ndarama High School. All rights reserved.</span>
+        <div class="socials" aria-label="Social media">
+          <a href="https://www.facebook.com/ndaramahigh/" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/channel/UCeKMbUFLVq6VIdFaERolQYg" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/golden_voices_band/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+  JAVASCRIPT
+  ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // --- Hamburger ---
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.getElementById('navLinks');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function() {
+          const expanded = this.getAttribute('aria-expanded') === 'true' ? false : true;
+          this.setAttribute('aria-expanded', expanded);
+          this.classList.toggle('active');
+          navLinks.classList.toggle('open');
+        });
+      }
+
+      // --- Scroll Reveal ---
+      const reveals = document.querySelectorAll('.reveal');
+      const staggerParents = document.querySelectorAll('.reveal-stagger');
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+        reveals.forEach(function(el) { observer.observe(el); });
+        staggerParents.forEach(function(el) { observer.observe(el); });
+      } else {
+        reveals.forEach(function(el) { el.classList.add('visible'); });
+        staggerParents.forEach(function(el) { el.classList.add('visible'); });
+      }
+
+      // --- Social links open in new tab ---
+      document.querySelectorAll('.socials a').forEach(function(link) {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      });
+
+    })();
+
+    // ============================================================
+    // BLOG LOGIC
+    // ============================================================
+    const API_URL = '/api';
+    let allArticles = [];
+    let filteredArticles = [];
+    const postsPerPage = 3;
+    let currentPage = 1;
+
+    // --- Load all data ---
+    function loadAllData() {
+      Promise.all([
+        fetch(`${API_URL}/articles`).then(r => r.json()),
+        fetch(`${API_URL}/categories`).then(r => r.json())
+      ])
+      .then(([articles, categories]) => {
+        allArticles = articles;
+        filteredArticles = [...articles];
+        populateCategories(categories);
+        renderBlog();
+        renderSidebar();
+      })
+      .catch(err => {
+        console.error('Error loading data:', err);
+        document.getElementById('newsGrid').innerHTML = `
+          <div class="empty-state">
+            <div class="icon">⚠️</div>
+            <h3>Unable to load articles</h3>
+            <p>Please refresh the page or try again later.</p>
+          </div>
+        `;
+        document.getElementById('featuredContainer').innerHTML = `
+          <div class="img-placeholder"><span class="placeholder-tag">Error</span></div>
+          <div class="nf-body">
+            <span class="category">Error</span>
+            <h3>Could not load content</h3>
+            <p>Please check your connection and try again.</p>
+          </div>
+        `;
+      });
+    }
+
+    // --- Populate category filter ---
+    function populateCategories(categories) {
+      const select = document.getElementById('categoryFilter');
+      if (!select) return;
+      categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat.category;
+        option.textContent = `${cat.category_label || cat.category} (${cat.count})`;
+        select.appendChild(option);
+      });
+    }
+
+    // --- Render blog ---
+    function renderBlog() {
+      // Featured
+      const featured = filteredArticles.find(a => a.featured) || filteredArticles[0] || null;
+      renderFeatured(featured);
+
+      // Pagination
+      const totalPages = Math.ceil(filteredArticles.length / postsPerPage);
+      if (currentPage > totalPages) currentPage = totalPages || 1;
+      const start = (currentPage - 1) * postsPerPage;
+      const end = start + postsPerPage;
+      const pageArticles = filteredArticles.slice(start, end);
+
+      renderGrid(pageArticles);
+      renderPagination(totalPages);
+    }
+
+    // --- Get featured image for an article from its media array ---
+    function getFeaturedImage(article) {
+      if (!article.media || !article.media.length) return null;
+      return article.media.find(m => m.is_featured && m.type === 'image') ||
+             article.media.find(m => m.type === 'image') ||
+             null;
+    }
+
+    // --- Render featured ---
+    function renderFeatured(article) {
+      const container = document.getElementById('featuredContainer');
+      if (!container) return;
+      if (!article) {
+        container.innerHTML = `
+          <div class="img-placeholder"><span class="placeholder-tag">No featured article</span></div>
+          <div class="nf-body">
+            <span class="category">Welcome</span>
+            <h3>No articles yet</h3>
+            <p>Check back soon for the latest news from Ndarama High School.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="img-placeholder">
+          ${(() => { const img = getFeaturedImage(article); return img ?
+            `<img src="${img.url}" alt="${img.alt_text || article.title}" />` :
+            `<span class="placeholder-tag">${article.category_label || 'Featured'}</span>`; })()}
+        </div>
+        <div class="nf-body">
+          <span class="category">${article.category_label || article.category || 'News'}</span>
+          <h3>${article.title}</h3>
+          <p>${article.excerpt || article.content.slice(0, 160) + '...'}</p>
+          <div class="date">
+            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+            ${formatDate(article.date)}
+          </div>
+        </div>
+      `;
+    }
+
+    // --- Render grid ---
+    function renderGrid(articles) {
+      const grid = document.getElementById('newsGrid');
+      if (!grid) return;
+      if (!articles || articles.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">📝</div>
+            <h3>No articles found</h3>
+            <p>Try adjusting your filters or check back later.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = articles.map(article => `
+        <div class="news-card">
+          <div class="img-placeholder">
+            ${(() => { const img = getFeaturedImage(article); return img ?
+              `<img src="${img.url}" alt="${img.alt_text || article.title}" />` :
+              `<span class="placeholder-tag">${article.category_label || 'News'}</span>`; })()}
+          </div>
+          <div class="nc-body">
+            <span class="category ${article.category || 'general'}">${article.category_label || article.category || 'General'}</span>
+            <h4>${article.title}</h4>
+            <p>${article.excerpt || article.content.slice(0, 120) + '...'}</p>
+            <div class="date">
+              <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+              ${formatDate(article.date)}
+            </div>
+            <a href="article.html?id=${article.id}" class="read-more">Read more <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // --- Render pagination ---
+    function renderPagination(totalPages) {
+      const container = document.getElementById('paginationContainer');
+      if (!container) return;
+      if (totalPages <= 1) {
+        container.innerHTML = '';
+        return;
+      }
+
+      let html = '';
+      html += `<a class="${currentPage <= 1 ? 'disabled' : ''}" onclick="changePage(${currentPage - 1})">← Newer</a>`;
+
+      for (let i = 1; i <= totalPages; i++) {
+        html += `<a class="${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</a>`;
+      }
+
+      html += `<a class="${currentPage >= totalPages ? 'disabled' : ''}" onclick="changePage(${currentPage + 1})">Older →</a>`;
+      container.innerHTML = html;
+    }
+
+    // --- Change page ---
+    window.changePage = function(page) {
+      const totalPages = Math.ceil(filteredArticles.length / postsPerPage);
+      if (page < 1 || page > totalPages) return;
+      currentPage = page;
+      renderBlog();
+      window.scrollTo({ top: document.getElementById('news').offsetTop - 100, behavior: 'smooth' });
+    };
+
+    // --- Format date ---
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-ZW', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    // --- Render sidebar ---
+    function renderSidebar() {
+      // Categories
+      const categoryCounts = {};
+      allArticles.forEach(a => {
+        const key = a.category || 'general';
+        if (!categoryCounts[key]) categoryCounts[key] = { label: a.category_label || key, count: 0 };
+        categoryCounts[key].count++;
+      });
+
+      const catList = document.getElementById('categoriesList');
+      if (catList) {
+        catList.innerHTML = Object.entries(categoryCounts).map(([key, data]) => `
+          <li><a href="#" onclick="filterByCategory('${key}'); return false;">${data.label} <span class="count">(${data.count})</span></a></li>
+        `).join('');
+      }
+
+      // Recent posts (last 5)
+      const recent = [...allArticles].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+      const recentList = document.getElementById('recentPostsList');
+      if (recentList) {
+        recentList.innerHTML = recent.map(a => `
+          <li><a href="article.html?id=${a.id}">${a.title}</a></li>
+        `).join('');
+      }
+
+      // Archive
+      const years = {};
+      allArticles.forEach(a => {
+        if (a.date) {
+          const year = new Date(a.date).getFullYear();
+          if (!years[year]) years[year] = 0;
+          years[year]++;
+        }
+      });
+      const archiveList = document.getElementById('archiveList');
+      if (archiveList) {
+        archiveList.innerHTML = Object.entries(years).sort((a, b) => b[0] - a[0]).map(([year, count]) => `
+          <li><a href="#" onclick="filterByYear('${year}'); return false;">${year} <span class="count">(${count})</span></a></li>
+        `).join('');
+      }
+    }
+
+    // --- Filter functions ---
+    window.filterByCategory = function(category) {
+      if (category) {
+        filteredArticles = allArticles.filter(a => a.category === category);
+        document.getElementById('categoryFilter').value = category;
+      } else {
+        filteredArticles = [...allArticles];
+        document.getElementById('categoryFilter').value = '';
+      }
+      currentPage = 1;
+      renderBlog();
+    };
+
+    window.filterByYear = function(year) {
+      filteredArticles = allArticles.filter(a => {
+        if (!a.date) return false;
+        return new Date(a.date).getFullYear() === parseInt(year);
+      });
+      currentPage = 1;
+      renderBlog();
+    };
+
+    // --- Event listeners ---
+    document.addEventListener('DOMContentLoaded', function() {
+      // Category filter
+      const categoryFilter = document.getElementById('categoryFilter');
+      if (categoryFilter) {
+        categoryFilter.addEventListener('change', function() {
+          const val = this.value;
+          if (val) {
+            filteredArticles = allArticles.filter(a => a.category === val);
+          } else {
+            filteredArticles = [...allArticles];
+          }
+          currentPage = 1;
+          renderBlog();
+        });
+      }
+
+      // Search
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          const query = this.value.toLowerCase().trim();
+          if (query) {
+            filteredArticles = allArticles.filter(a =>
+              a.title.toLowerCase().includes(query) ||
+              a.excerpt.toLowerCase().includes(query) ||
+              a.content.toLowerCase().includes(query)
+            );
+          } else {
+            filteredArticles = [...allArticles];
+          }
+          currentPage = 1;
+          renderBlog();
+        });
+      }
+
+      // Load data
+      loadAllData();
+    });
+  </script>
+
+  <script src="assets/js/chatbot.js"></script>
+
+</body>
+</html>

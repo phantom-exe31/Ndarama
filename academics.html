@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Academics — Ndarama High School</title>
+  <meta name="description" content="Subjects offered and full A-Level results archive at Ndarama High School, Masvingo." />
+  <link rel="icon" type="image/jpeg" href="assets/img/logo.jpg" />
+
+  <!-- Google Fonts with display=swap -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;900&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet" />
+
+  <!-- ===== EXTERNAL STYLESHEET ===== -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+  <style>
+    /* ============================================================
+       ACADEMICS PAGE — additional styles
+       ============================================================ */
+
+    /* ---------- Page Header (photoblend) ---------- */
+    .page-header {
+      position: relative;
+      min-height: 45vh;
+      display: flex;
+      align-items: center;
+      text-align: left;
+      padding: 4rem 0;
+      background-color: var(--mahogany);
+      overflow: hidden;
+    }
+    .page-header .container {
+      position: relative;
+      z-index: 3;
+    }
+
+    .page-header .bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+      z-index: 1;
+      opacity: 0.30;
+    }
+
+    .page-header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(145deg, rgba(48, 22, 20, 0.85) 0%, rgba(93, 25, 30, 0.55) 60%, rgba(48, 22, 20, 0.75) 100%),
+        radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.30) 100%);
+      pointer-events: none;
+    }
+
+    .page-header .breadcrumb {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 1rem;
+    }
+    .page-header .breadcrumb a {
+      color: var(--gold);
+    }
+    .page-header .breadcrumb a:hover {
+      color: var(--white);
+    }
+
+    .page-header h1 {
+      color: var(--white);
+      font-weight: 900;
+      max-width: 700px;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+    }
+    .page-header p {
+      font-size: 1.15rem;
+      max-width: 560px;
+      margin-top: 1.2rem;
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    }
+    .page-header .eyebrow {
+      background: rgba(217, 146, 14, 0.2);
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    /* ---------- Tabs ---------- */
+    .tabs-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin: 2rem 0 3rem;
+      flex-wrap: wrap;
+      border-bottom: 2px solid rgba(177, 9, 61, 0.15);
+      padding-bottom: 0.5rem;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 0.6rem 1.8rem;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--mahogany);
+      opacity: 0.5;
+      cursor: pointer;
+      transition: all var(--transition);
+      border-radius: 30px;
+      position: relative;
+    }
+    .tab-btn:hover {
+      opacity: 0.8;
+      color: var(--cherry);
+    }
+    .tab-btn.active {
+      opacity: 1;
+      color: var(--white);
+      background: var(--cherry);
+    }
+    .tab-btn.active:hover {
+      background: var(--gold);
+      color: var(--mahogany);
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeUp 0.4s ease;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---------- Subject Grid ---------- */
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    .subject-card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--cherry);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .subject-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 35px rgba(48, 22, 20, 0.12);
+    }
+    .subject-card h5 {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      color: var(--mahogany);
+      margin-bottom: 0.4rem;
+    }
+    .subject-card p {
+      font-size: 0.9rem;
+      color: var(--text-color);
+      opacity: 0.8;
+      line-height: 1.5;
+    }
+
+    /* Arts stream gets gold border */
+    .subject-card.arts-card {
+      border-left-color: var(--gold);
+    }
+
+    /* ---------- Results Table ---------- */
+    .results-table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      background: var(--white);
+    }
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      min-width: 500px;
+    }
+    .results-table thead {
+      background: var(--mahogany);
+      color: var(--white);
+    }
+    .results-table th {
+      padding: 0.9rem 1.2rem;
+      text-align: left;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .results-table td {
+      padding: 0.8rem 1.2rem;
+      border-bottom: 1px solid rgba(48, 22, 20, 0.06);
+      color: var(--mahogany);
+    }
+    .results-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .results-table tbody tr:hover {
+      background: rgba(177, 9, 61, 0.04);
+    }
+
+    .results-table .badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--mahogany);
+      padding: 0.15rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .js-toggle-row {
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .js-toggle-row:hover {
+      background: rgba(177, 9, 61, 0.08) !important;
+    }
+    .js-toggle-row .expand-icon {
+      display: inline-block;
+      transition: transform 0.3s ease;
+      margin-left: 0.5rem;
+      font-size: 0.7rem;
+    }
+    .js-toggle-row.expanded .expand-icon {
+      transform: rotate(180deg);
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 768px) {
+      .page-header {
+        min-height: 35vh;
+        text-align: center;
+        padding: 3rem 0;
+      }
+      .page-header h1 {
+        font-size: 2.2rem;
+      }
+      .page-header p {
+        font-size: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .tabs-bar {
+        gap: 0.3rem;
+      }
+      .tab-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.8rem;
+      }
+
+      .subject-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .results-table {
+        font-size: 0.82rem;
+        min-width: 400px;
+      }
+      .results-table th,
+      .results-table td {
+        padding: 0.5rem 0.8rem;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="assets/css/chatbot.css" />
+</head>
+
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="nav" id="siteNav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
+      <span class="brand-name">Ndarama High<span>Spring of Knowledge and Power</span></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="academics.html" class="active">Academics</a>
+      <a href="student-life.html">Student Life</a>
+      <a href="news.html">News</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="btn-cta">Book a Tour</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ===== PAGE HEADER (photoblend) ===== -->
+  <section class="page-header">
+    <!-- Background image — replace with your own -->
+    <img
+      src="https://ndaramahigh.co.zw/images/reception-block.webp"
+      alt="Ndarama High School campus"
+      fetchpriority="high"
+      decoding="async"
+      class="bg-img"
+    />
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Academics</div>
+      <span class="eyebrow">Academics</span>
+      <h1>A comprehensive curriculum for every path.</h1>
+      <p>From Pure Mathematics to Music, Ndarama balances a STEM powerhouse with a thriving Arts programme.</p>
+    </div>
+  </section>
+
+  <!-- ===== SUBJECTS ===== -->
+  <section class="story" id="subjects">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Subjects Offered</span>
+        <h2>Choose a stream to explore.</h2>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs-bar reveal" role="tablist">
+        <button class="tab-btn active" data-tab="sciences" role="tab" aria-selected="true">Sciences</button>
+        <button class="tab-btn" data-tab="commercials" role="tab" aria-selected="false">Commercials</button>
+        <button class="tab-btn" data-tab="arts" role="tab" aria-selected="false">Arts</button>
+        <button class="tab-btn" data-tab="technical" role="tab" aria-selected="false">Technical</button>
+      </div>
+
+      <!-- Sciences -->
+      <div class="tab-panel active" id="panel-sciences">
+        <div class="subject-grid">
+          <div class="subject-card"><h5>Pure Mathematics</h5><p>98 candidates, 100% pass rate, 40 A grades — our flagship subject.</p></div>
+          <div class="subject-card"><h5>Physics</h5><p>38 candidates, 97.3% pass rate, 19 A grades.</p></div>
+          <div class="subject-card"><h5>Chemistry</h5><p>53 candidates, 100% pass rate, 21 A grades.</p></div>
+          <div class="subject-card"><h5>Biology</h5><p>29 candidates, 97% pass rate, 9 A grades.</p></div>
+          <div class="subject-card"><h5>Computer Science</h5><p>25 candidates, 100% pass rate, 16 A grades (64% A-rate).</p></div>
+          <div class="subject-card"><h5>Additional Mathematics</h5><p>Extension mathematics for our strongest STEM candidates.</p></div>
+          <div class="subject-card"><h5>Mathematics Mechanics</h5><p>Applied mathematics for engineering-track students.</p></div>
+          <div class="subject-card"><h5>Statistics</h5><p>Data analysis and probability for STEM and Commercials students alike.</p></div>
+          <div class="subject-card"><h5>Food Science</h5><p>Applied science with a practical, nutrition-focused curriculum.</p></div>
+          <div class="subject-card"><h5>Sports Science</h5><p>The science of performance, physiology, and training.</p></div>
+        </div>
+      </div>
+
+      <!-- Commercials -->
+      <div class="tab-panel" id="panel-commercials">
+        <div class="subject-grid">
+          <div class="subject-card"><h5>Business Studies</h5><p>25 candidates in our 2025 A-Level cohort.</p></div>
+          <div class="subject-card"><h5>Economics</h5><p>19 candidates in our 2025 A-Level cohort.</p></div>
+          <div class="subject-card"><h5>Accounts</h5><p>7 candidates, 57% pass rate — an area we're actively strengthening.</p></div>
+        </div>
+      </div>
+
+      <!-- Arts -->
+      <div class="tab-panel" id="panel-arts">
+        <div class="subject-grid">
+          <div class="subject-card arts-card"><h5>Sociology</h5><p>42 candidates, 100% pass rate, 30 A grades — our leading Arts performer.</p></div>
+          <div class="subject-card arts-card"><h5>Literature in English</h5><p>32 candidates, 100% pass rate, 21 A grades.</p></div>
+          <div class="subject-card arts-card"><h5>Literature in Shona</h5><p>9 candidates, 88% pass rate.</p></div>
+          <div class="subject-card arts-card"><h5>History</h5><p>50 candidates, 100% pass rate, 14 A grades — our highest Arts enrollment.</p></div>
+          <div class="subject-card arts-card"><h5>Geography</h5><p>41 candidates, 100% pass rate, 17 A grades.</p></div>
+          <div class="subject-card arts-card"><h5>Heritage Studies</h5><p>16 candidates, 100% pass rate.</p></div>
+          <div class="subject-card arts-card"><h5>Music</h5><p>2 candidates, 100% pass rate — directly feeding our album project.</p></div>
+          <div class="subject-card arts-card"><h5>Family &amp; Religious Studies</h5><p>Values, ethics, and comparative religion.</p></div>
+        </div>
+      </div>
+
+      <!-- Technical -->
+      <div class="tab-panel" id="panel-technical">
+        <div class="subject-grid">
+          <div class="subject-card"><h5>Textile Technology &amp; Design</h5><p>Practical design and construction skills.</p></div>
+          <div class="subject-card"><h5>Technical Graphics</h5><p>Technical drawing and design communication.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RESULTS ===== -->
+  <section class="results" id="results">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Examination Results</span>
+        <h2>A record of consistent excellence.</h2>
+        <p>Click any highlighted row to expand the full subject breakdown for that year.</p>
+      </div>
+
+      <div class="results-table-wrap reveal" style="margin-bottom:24px;">
+        <table class="results-table">
+          <thead>
+            <tr><th>Year</th><th>Level</th><th>Pass Rate</th><th>Top Student</th><th>Highlights</th></tr>
+          </thead>
+          <tbody>
+            <tr class="js-toggle-row" data-target="row-2025a">
+              <td>2025</td>
+              <td>A-Level</td>
+              <td><strong>100%</strong></td>
+              <td>Elias Murisi</td>
+              <td><span class="badge">30 pts, Sciences</span> <span class="expand-icon">▼</span></td>
+            </tr>
+            <tr>
+              <td>2024</td>
+              <td>A-Level</td>
+              <td>99.4%</td>
+              <td>—</td>
+              <td>42 candidates at 15+ points</td>
+            </tr>
+            <tr>
+              <td>2016</td>
+              <td>O-Level</td>
+              <td>76.25%</td>
+              <td>Praise T. Sombi</td>
+              <td>12 As — school record</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Expandable row detail -->
+      <div class="reveal" id="row-2025a" style="display:none;">
+        <div class="results-table-wrap" style="margin-bottom:24px;">
+          <table class="results-table">
+            <thead>
+              <tr><th>Subject</th><th>Candidates</th><th>Pass Rate</th><th>A Grades</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Pure Mathematics</td><td>98</td><td>100%</td><td>40</td></tr>
+              <tr><td>Sociology</td><td>42</td><td>100%</td><td>30</td></tr>
+              <tr><td>Chemistry</td><td>53</td><td>100%</td><td>21</td></tr>
+              <tr><td>Literature in English</td><td>32</td><td>100%</td><td>21</td></tr>
+              <tr><td>Physics</td><td>38</td><td>97.3%</td><td>19</td></tr>
+              <tr><td>Geography</td><td>41</td><td>100%</td><td>17</td></tr>
+              <tr><td>Computer Science</td><td>25</td><td>100%</td><td>16</td></tr>
+              <tr><td>History</td><td>50</td><td>100%</td><td>14</td></tr>
+              <tr><td>Heritage Studies</td><td>16</td><td>100%</td><td>—</td></tr>
+              <tr><td>Business Studies</td><td>25</td><td>100%</td><td>—</td></tr>
+              <tr><td>Economics</td><td>19</td><td>100%</td><td>—</td></tr>
+              <tr><td>Biology</td><td>29</td><td>97%</td><td>9</td></tr>
+              <tr><td>Music</td><td>2</td><td>100%</td><td>2</td></tr>
+              <tr><td>Accounts</td><td>7</td><td>57%</td><td>1</td></tr>
+              <tr><td>Literature in Shona</td><td>9</td><td>88%</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="reveal" style="font-size:0.95rem;opacity:0.8;">134 candidates (77.5%) scored 10 points or above in 2025; 36 scored 15 points or above; 18 achieved 15 straight points.</p>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta">
+    <div class="reveal">
+      <span class="eyebrow" style="color:var(--gold);background:rgba(217,146,14,0.15);">Curious About Our Curriculum?</span>
+      <h2 class="serif">Talk to our academics team.</h2>
+      <p>We're happy to walk you through subject options, past papers, and what a typical hot-sitting week looks like.</p>
+      <div class="cta-actions">
+        <a href="contact.html" class="btn-cta">Contact Admissions</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
+        <h4>Ndarama High School</h4>
+        <p>Spring of Knowledge and Power</p>
+      </div>
+      <div>
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="academics.html">Academics</a></li>
+          <li><a href="student-life.html">Student Life</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li>P.O. Box 9010, Masvingo, Zimbabwe</li>
+          <li>+263 39 225 2984</li>
+          <li>info@ndarama.ac.zw</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Ndarama High School. All rights reserved.</span>
+      <div class="socials" aria-label="Social media">
+        <a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="#" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== JavaScript ===== -->
+<script>
+  (function() {
+    // 1. Hamburger toggle
+    var hamburger = document.getElementById('hamburger');
+    var navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', function() {
+        var expanded = this.getAttribute('aria-expanded') === 'true' ? false : true;
+        this.setAttribute('aria-expanded', expanded);
+        this.classList.toggle('active');
+        navLinks.classList.toggle('open');
+      });
+    }
+
+    // 2. Tab system
+    var tabBtns = document.querySelectorAll('.tab-btn');
+    var tabPanels = {
+      sciences: document.getElementById('panel-sciences'),
+      commercials: document.getElementById('panel-commercials'),
+      arts: document.getElementById('panel-arts'),
+      technical: document.getElementById('panel-technical')
+    };
+
+    tabBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        // Update buttons
+        tabBtns.forEach(function(b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        this.classList.add('active');
+        this.setAttribute('aria-selected', 'true');
+
+        // Update panels
+        var tabId = this.getAttribute('data-tab');
+        Object.keys(tabPanels).forEach(function(key) {
+          tabPanels[key].classList.toggle('active', key === tabId);
+        });
+      });
+    });
+
+    // 3. Expandable table row
+    var toggleRows = document.querySelectorAll('.js-toggle-row');
+    toggleRows.forEach(function(row) {
+      row.addEventListener('click', function() {
+        var targetId = this.getAttribute('data-target');
+        var target = document.getElementById(targetId);
+        if (target) {
+          var isVisible = target.style.display !== 'none';
+          target.style.display = isVisible ? 'none' : 'block';
+          this.classList.toggle('expanded');
+        }
+      });
+    });
+
+    // 4. Scroll reveal (Intersection Observer)
+    var reveals = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.15 });
+      reveals.forEach(function(el) {
+        observer.observe(el);
+      });
+    } else {
+      reveals.forEach(function(el) { el.classList.add('visible'); });
+    }
+  })();
+</script>
+
+<script src="assets/js/chatbot.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Article — Ndarama High School</title>
+  <meta name="description" content="News and stories from Ndarama High School, Masvingo." />
+  <link rel="icon" type="image/jpeg" href="assets/img/logo.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,900;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       ROOT VARIABLES & RESET — (same as news.html)
+       ============================================================ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --gold: #D4AF37;
+      --gold-light: #f3e08e;
+      --cherry: #8B0000;
+      --mahogany: #5C2E16;
+      --dark: #0f0e0c;
+      --dark-soft: #1e1b17;
+      --light: #f9f7f2;
+      --gray: #6b6a67;
+      --white: #ffffff;
+      --font-serif: 'Playfair Display', serif;
+      --font-sans: 'Inter', sans-serif;
+      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 12px 40px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.12);
+      --shadow-glow: 0 8px 32px rgba(212, 175, 55, 0.25);
+      --radius-card: 16px;
+      --radius-pill: 50px;
+      --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    ul,
+    ol {
+      list-style: none;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============================================================
+       SKIP LINK
+       ============================================================ */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--dark);
+      padding: 12px 24px;
+      border-radius: 0 0 8px 8px;
+      font-weight: 700;
+      z-index: 1000;
+      transition: top 0.3s;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ============================================================
+       NAVIGATION (identical to other pages)
+       ============================================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(15, 14, 12, 0.85);
+      backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 10px 0;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--white);
+    }
+    .brand-mark-badge img {
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+    }
+    .brand-name {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+    .brand-name span {
+      display: block;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.9;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--white);
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+    .btn-cta {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 10px 28px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all var(--transition);
+      box-shadow: var(--shadow-glow);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-cta:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(212, 175, 55, 0.35);
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 28px;
+      height: 2.5px;
+      background: var(--white);
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+    @media (max-width: 900px) {
+      .hamburger {
+        display: flex;
+      }
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 14, 12, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 24px;
+        gap: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: clip-path 0.4s ease;
+        pointer-events: none;
+      }
+      .nav-links.open {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        pointer-events: all;
+      }
+      .nav-links a {
+        font-size: 1.1rem;
+        padding: 8px 0;
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .nav-links .btn-cta {
+        width: 100%;
+        justify-content: center;
+        margin-top: 8px;
+      }
+    }
+
+    /* ============================================================
+       ARTICLE
+       ============================================================ */
+    .article-hero {
+      background: var(--dark);
+      padding: 160px 0 60px;
+    }
+    .article-hero .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .article-hero .back-link:hover {
+      gap: 12px;
+    }
+    .article-hero .category {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--gold);
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 1.2rem;
+    }
+    .article-hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--white);
+      letter-spacing: -0.5px;
+      max-width: 900px;
+    }
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.9rem;
+    }
+    .article-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .article-meta svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+
+    .article-image-wrap {
+      max-width: 1000px;
+      margin: -30px auto 0;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+    .article-image-wrap img {
+      width: 100%;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-lg);
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .article-body-section {
+      background: var(--white);
+      padding: 4rem 0 6rem;
+    }
+    .article-body {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .article-body p {
+      font-size: 1.1rem;
+      color: var(--dark-soft);
+      margin-bottom: 1.4rem;
+      line-height: 1.85;
+    }
+    .article-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .article-tags .tag {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--mahogany);
+      background: rgba(212, 175, 55, 0.1);
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+    }
+    .article-nav-back {
+      max-width: 760px;
+      margin: 3rem auto 0;
+      text-align: center;
+    }
+    .article-nav-back a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--cherry);
+      border: 2px solid rgba(139, 0, 0, 0.15);
+      padding: 12px 32px;
+      border-radius: var(--radius-pill);
+      transition: all var(--transition);
+    }
+    .article-nav-back a:hover {
+      background: var(--cherry);
+      color: var(--white);
+      border-color: var(--cherry);
+    }
+
+    .article-state {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 2rem 0;
+      color: var(--gray);
+    }
+    .article-state .icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+    }
+    .article-state h3 {
+      font-family: var(--font-serif);
+      color: var(--mahogany);
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .article-hero {
+        padding: 130px 0 40px;
+      }
+    }
+
+    /* Footer (identical to other pages) */
+    footer {
+      background: var(--dark-soft);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 48px 0 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr;
+      gap: 48px;
+      margin-bottom: 40px;
+    }
+    .footer-brand h4 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--white);
+      margin-top: 8px;
+    }
+    .footer-brand p {
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+    .footer-grid h5 {
+      color: var(--white);
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 1rem;
+    }
+    .footer-grid ul li {
+      margin-bottom: 10px;
+    }
+    .footer-grid ul li a {
+      transition: color var(--transition);
+    }
+    .footer-grid ul li a:hover {
+      color: var(--gold);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.9rem;
+    }
+    .socials {
+      display: flex;
+      gap: 16px;
+    }
+    .socials a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      transition: all var(--transition);
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .socials a:hover {
+      background: var(--gold);
+      color: var(--dark);
+      transform: translateY(-3px);
+    }
+    .socials a svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="assets/css/chatbot.css" />
+</head>
+
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ============================================================
+  NAV
+  ============================================================ -->
+  <header class="nav" id="siteNav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
+        <span class="brand-name">Ndarama High<span>Spring of Knowledge and Power</span></span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="student-life.html">Student Life</a>
+        <a href="news.html" class="active">News</a>
+        <a href="contact.html">Contact</a>
+        <a href="contact.html" class="btn-cta">Book a Tour</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================================
+    ARTICLE HERO
+    ============================================================ -->
+    <section class="article-hero">
+      <div class="container">
+        <a href="news.html" class="back-link">&larr; Back to News</a>
+        <div id="articleMeta">
+          <span class="category">Loading...</span>
+          <h1 id="articleTitle">Loading article…</h1>
+          <div class="article-meta">
+            <span id="articleAuthor"></span>
+            <span id="articleDate"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="article-image-wrap" id="articleImageWrap" style="display:none;">
+      <img id="articleImage" src="" alt="" />
+    </div>
+
+    <!-- ============================================================
+    ARTICLE BODY
+    ============================================================ -->
+    <section class="article-body-section">
+      <div class="container">
+        <div id="articleContentWrap" class="article-body">
+          <p>Loading article…</p>
+        </div>
+        <div class="article-nav-back">
+          <a href="news.html">&larr; Back to all news</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+  FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
+          <h4>Ndarama High School</h4>
+          <p>Spring of Knowledge and Power</p>
+        </div>
+        <div>
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="student-life.html">Student Life</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Contact</h5>
+          <ul>
+            <li>P.O. Box 9010, Masvingo, Zimbabwe</li>
+            <li>+263 39 225 2984</li>
+            <li>info@ndarama.ac.zw</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Ndarama High School. All rights reserved.</span>
+        <div class="socials" aria-label="Social media">
+          <a href="https://www.facebook.com/ndaramahigh/" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/channel/UCeKMbUFLVq6VIdFaERolQYg" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/golden_voices_band/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+  JAVASCRIPT
+  ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // --- Hamburger ---
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.getElementById('navLinks');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function() {
+          const expanded = this.getAttribute('aria-expanded') === 'true' ? false : true;
+          this.setAttribute('aria-expanded', expanded);
+          this.classList.toggle('active');
+          navLinks.classList.toggle('open');
+        });
+      }
+
+      // --- Social links open in a new tab ---
+      document.querySelectorAll('.socials a').forEach(function(link) {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      });
+    })();
+
+    // ============================================================
+    // ARTICLE LOGIC
+    // ============================================================
+    const API_URL = '/api';
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-ZW', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function getFeaturedImage(article) {
+      if (!article.media || !article.media.length) return null;
+      return article.media.find(m => m.is_featured && m.type === 'image') ||
+             article.media.find(m => m.type === 'image') ||
+             null;
+    }
+
+    function renderArticle(article) {
+      document.title = `${article.title} — Ndarama High School`;
+
+      document.getElementById('articleMeta').innerHTML = `
+        <span class="category">${article.category_label || article.category || 'News'}</span>
+        <h1 id="articleTitle">${escapeHtml(article.title)}</h1>
+        <div class="article-meta">
+          <span>
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 100-8 4 4 0 000 8z"/></svg>
+            ${escapeHtml(article.author || 'Ndarama High School')}
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+            ${formatDate(article.date)}
+          </span>
+        </div>
+      `;
+
+      const img = getFeaturedImage(article);
+      if (img) {
+        document.getElementById('articleImage').src = img.url;
+        document.getElementById('articleImage').alt = img.alt_text || article.title;
+        document.getElementById('articleImageWrap').style.display = 'block';
+      }
+
+      const paragraphs = (article.content || '')
+        .split(/\n\s*\n/)
+        .map(p => p.trim())
+        .filter(Boolean)
+        .map(p => `<p>${escapeHtml(p).replace(/\n/g, '<br>')}</p>`)
+        .join('');
+
+      const tags = (article.tags || []).map(t => `<span class="tag">${escapeHtml(t.name)}</span>`).join('');
+
+      document.getElementById('articleContentWrap').innerHTML = `
+        ${paragraphs || '<p>' + escapeHtml(article.excerpt || '') + '</p>'}
+        ${tags ? `<div class="article-tags">${tags}</div>` : ''}
+      `;
+    }
+
+    function renderError(message) {
+      document.getElementById('articleMeta').innerHTML = `<span class="category">Error</span><h1>Article not found</h1>`;
+      document.getElementById('articleContentWrap').innerHTML = `
+        <div class="article-state">
+          <div class="icon">📰</div>
+          <h3>${escapeHtml(message)}</h3>
+          <p>The article you're looking for may have been moved or unpublished.</p>
+        </div>
+      `;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      if (!id) {
+        renderError('No article specified.');
+        return;
+      }
+
+      fetch(`${API_URL}/articles/${encodeURIComponent(id)}`)
+        .then(r => {
+          if (!r.ok) throw new Error('Not found');
+          return r.json();
+        })
+        .then(renderArticle)
+        .catch(() => renderError('We couldn\'t load this article.'));
+    });
+  </script>
+
+  <script src="assets/js/chatbot.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "ndarama-high-school-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ndarama High School website with an AI-powered chatbot backend.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
