@@ -44,6 +44,7 @@ const deleteTitle = document.getElementById('deleteTitle');
 const fileInput = document.getElementById('fileInput');
 const mediaListEl = document.getElementById('mediaList');
 const addMediaBtn = document.getElementById('addMediaBtn');
+const addVideoFileBtn = document.getElementById('addVideoFileBtn');
 const addVideoBtn = document.getElementById('addVideoBtn');
 const addFileBtn = document.getElementById('addFileBtn');
 
@@ -279,6 +280,10 @@ function renderMediaList() {
         preview = `<img src="https://img.youtube.com/vi/${getYouTubeId(item.url)}/mqdefault.jpg" alt="Video thumbnail" />`;
       } else if (item.url.includes('vimeo.com')) {
         preview = `<div class="media-icon">🎬</div>`;
+      } else if (item.url.includes('tiktok.com')) {
+        preview = `<div class="media-icon">🎵</div>`;
+      } else if (item.url.includes('instagram.com')) {
+        preview = `<div class="media-icon">📸</div>`;
       } else {
         preview = `<video src="${item.url}" muted></video>`;
       }
@@ -357,12 +362,12 @@ function uploadFiles(files) {
 }
 
 function addVideoLink() {
-  const url = prompt('Enter YouTube or Vimeo video URL:');
+  const url = prompt('Enter a YouTube, Vimeo, TikTok, or Instagram video URL:');
   if (!url) return;
   const trimmed = url.trim();
   if (!trimmed) return;
-  if (!/(youtube\.com\/watch\?v=|youtu\.be\/|vimeo\.com\/)/.test(trimmed)) {
-    alert('Please enter a valid YouTube or Vimeo URL.');
+  if (!/(youtube\.com\/watch\?v=|youtu\.be\/|vimeo\.com\/|tiktok\.com\/|instagram\.com\/(p|reel|tv)\/)/.test(trimmed)) {
+    alert('Please enter a valid YouTube, Vimeo, TikTok, or Instagram URL.');
     return;
   }
   addMediaItem({
@@ -552,6 +557,11 @@ addFileBtn.addEventListener('click', () => {
   fileInput.multiple = true;
   fileInput.click();
 });
+addVideoFileBtn.addEventListener('click', () => {
+  fileInput.accept = 'video/mp4,video/*';
+  fileInput.multiple = true;
+  fileInput.click();
+});
 addVideoBtn.addEventListener('click', addVideoLink);
 
 fileInput.addEventListener('change', function() {
@@ -559,6 +569,7 @@ fileInput.addEventListener('change', function() {
   if (files.length === 0) return;
   const validFiles = Array.from(files).filter(f => {
     if (this.accept.includes('image')) return f.type.startsWith('image/');
+    if (this.accept.includes('video')) return f.type.startsWith('video/');
     return true;
   });
   if (validFiles.length === 0) {

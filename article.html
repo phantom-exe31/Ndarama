@@ -311,6 +311,22 @@
       height: 15px;
       fill: currentColor;
     }
+    .author-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .verified-badge {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      color: var(--gold);
+    }
+    .verified-badge svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
     .article-image-wrap {
       max-width: 1000px;
@@ -356,6 +372,117 @@
       background: rgba(212, 175, 55, 0.1);
       padding: 0.35rem 1rem;
       border-radius: 20px;
+    }
+
+    /* --- Extra images: collage grid --- */
+    .article-gallery {
+      max-width: 760px;
+      margin: 3rem auto 0;
+    }
+    .article-gallery h3,
+    .article-videos h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--mahogany);
+      margin-bottom: 1rem;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+    }
+    .gallery-grid > a {
+      display: block;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      aspect-ratio: 1 / 1;
+    }
+    .gallery-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition);
+    }
+    .gallery-grid > a:hover img {
+      transform: scale(1.06);
+    }
+
+    /* --- Videos & social links: watch section --- */
+    .article-videos {
+      max-width: 760px;
+      margin: 3rem auto 0;
+    }
+    .video-block {
+      margin-bottom: 1.5rem;
+    }
+    .video-embed-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      background: var(--dark);
+    }
+    .video-embed-wrap iframe,
+    .video-embed-wrap video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      object-fit: cover;
+    }
+    .video-caption {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-top: 0.6rem;
+    }
+    .social-video-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--light);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition);
+    }
+    .social-video-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .social-video-card .platform-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--dark);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .social-video-card .info {
+      flex: 1;
+      min-width: 0;
+    }
+    .social-video-card .info strong {
+      display: block;
+      color: var(--mahogany);
+      font-size: 0.95rem;
+    }
+    .social-video-card .info span {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    .social-video-card .watch-cta {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--cherry);
+      white-space: nowrap;
     }
     .article-nav-back {
       max-width: 760px;
@@ -548,6 +675,8 @@
         <div id="articleContentWrap" class="article-body">
           <p>Loading article…</p>
         </div>
+        <div id="articleGallery" class="article-gallery" style="display:none;"></div>
+        <div id="articleVideos" class="article-videos" style="display:none;"></div>
         <div class="article-nav-back">
           <a href="news.html">&larr; Back to all news</a>
         </div>
@@ -652,6 +781,55 @@
              null;
     }
 
+    const VERIFIED_BADGE = `<span class="verified-badge" title="Verified official account"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1l2.6 2.4 3.5-.6 1 3.4 3.4 1-.6 3.5L24 13l-2.4 2.6.6 3.5-3.4 1-1 3.4-3.5-.6L12 25l-2.6-2.4-3.5.6-1-3.4-3.4-1 .6-3.5L0 13l2.4-2.6-.6-3.5 3.4-1 1-3.4 3.5.6L12 1z" transform="translate(0 -1)"/><path fill="var(--white)" d="M10.6 15.4L7.5 12.3l1.4-1.4 1.7 1.7 4.5-4.5 1.4 1.4z"/></svg></span>`;
+
+    function getYouTubeId(url) {
+      const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&?/]+)/);
+      return match ? match[1] : '';
+    }
+    function getVimeoId(url) {
+      const match = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+      return match ? match[1] : '';
+    }
+    function detectPlatform(url) {
+      if (url.includes('youtube.com') || url.includes('youtu.be')) return 'youtube';
+      if (url.includes('vimeo.com')) return 'vimeo';
+      if (url.includes('tiktok.com')) return 'tiktok';
+      if (url.includes('instagram.com')) return 'instagram';
+      return 'other';
+    }
+
+    function renderVideoBlock(item) {
+      const platform = detectPlatform(item.url);
+      const caption = item.caption ? `<div class="video-caption">${escapeHtml(item.caption)}</div>` : '';
+
+      if (platform === 'youtube') {
+        const id = getYouTubeId(item.url);
+        return `<div class="video-block"><div class="video-embed-wrap">
+          <iframe src="https://www.youtube.com/embed/${id}" title="${escapeHtml(item.alt_text || 'YouTube video')}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>${caption}</div>`;
+      }
+      if (platform === 'vimeo') {
+        const id = getVimeoId(item.url);
+        return `<div class="video-block"><div class="video-embed-wrap">
+          <iframe src="https://player.vimeo.com/video/${id}" title="${escapeHtml(item.alt_text || 'Vimeo video')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>${caption}</div>`;
+      }
+      if (platform === 'tiktok' || platform === 'instagram') {
+        const label = platform === 'tiktok' ? 'TikTok' : 'Instagram';
+        const icon = platform === 'tiktok' ? '🎵' : '📸';
+        return `<div class="video-block"><a class="social-video-card" href="${item.url}" target="_blank" rel="noopener noreferrer">
+          <span class="platform-icon">${icon}</span>
+          <span class="info"><strong>${escapeHtml(item.alt_text || 'Watch video')}</strong><span>View on ${label}</span></span>
+          <span class="watch-cta">Watch →</span>
+        </a>${caption}</div>`;
+      }
+      // Uploaded MP4 file — native streaming playback
+      return `<div class="video-block"><div class="video-embed-wrap">
+        <video src="${item.url}" controls preload="metadata" playsinline></video>
+      </div>${caption}</div>`;
+    }
+
     function renderArticle(article) {
       document.title = `${article.title} — Ndarama High School`;
 
@@ -661,7 +839,7 @@
         <div class="article-meta">
           <span>
             <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 100-8 4 4 0 000 8z"/></svg>
-            ${escapeHtml(article.author || 'Ndarama High School')}
+            <span class="author-name">${escapeHtml(article.author || 'Ndarama High School')}${VERIFIED_BADGE}</span>
           </span>
           <span>
             <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
@@ -690,6 +868,32 @@
         ${paragraphs || '<p>' + escapeHtml(article.excerpt || '') + '</p>'}
         ${tags ? `<div class="article-tags">${tags}</div>` : ''}
       `;
+
+      // --- Extra images: collage grid at the bottom ---
+      const media = article.media || [];
+      const extraImages = media.filter(m => m.type === 'image' && m !== img);
+      const galleryEl = document.getElementById('articleGallery');
+      if (extraImages.length > 0) {
+        galleryEl.innerHTML = `
+          <h3>More Photos</h3>
+          <div class="gallery-grid">
+            ${extraImages.map(m => `
+              <a href="${m.url}" target="_blank" rel="noopener noreferrer">
+                <img src="${m.url}" alt="${escapeHtml(m.alt_text || article.title)}" loading="lazy" />
+              </a>
+            `).join('')}
+          </div>
+        `;
+        galleryEl.style.display = 'block';
+      }
+
+      // --- Videos & social links: watch section at the bottom ---
+      const videoItems = media.filter(m => m.type === 'video' || m.type === 'video_link');
+      const videosEl = document.getElementById('articleVideos');
+      if (videoItems.length > 0) {
+        videosEl.innerHTML = `<h3>Watch</h3>${videoItems.map(renderVideoBlock).join('')}`;
+        videosEl.style.display = 'block';
+      }
     }
 
     function renderError(message) {
