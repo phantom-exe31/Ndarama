@@ -1,607 +1,1795 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Academics — Ndarama High School</title>
-  <meta name="description" content="Subjects offered and full A-Level results archive at Ndarama High School, Masvingo." />
-  <link rel="icon" type="image/jpeg" href="assets/img/logo.jpg" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academics — Ndarama High School</title>
+    <meta name="description" content="2024/2025 results, top performers, and academic excellence at Ndarama High School, Masvingo." />
+    <link rel="icon" type="image/jpeg" href="assets/img/logo.jpg" />
 
-  <!-- Google Fonts with display=swap -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;900&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,900;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- ===== EXTERNAL STYLESHEET ===== -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+        /* ============================================================
+           ROOT VARIABLES & RESET
+           ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    /* ============================================================
-       ACADEMICS PAGE — additional styles
-       ============================================================ */
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #f3e08e;
+            --gold-glow: rgba(212, 175, 55, 0.25);
+            --cherry: #8B0000;
+            --cherry-light: #b31b1b;
+            --mahogany: #5C2E16;
+            --dark: #0f0e0c;
+            --dark-soft: #1e1b17;
+            --light: #f9f7f2;
+            --gray: #6b6a67;
+            --white: #ffffff;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+            --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 12px 40px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.12);
+            --shadow-glow: 0 8px 32px rgba(212, 175, 55, 0.25);
+            --radius-card: 16px;
+            --radius-pill: 50px;
+            --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
 
-    /* ---------- Page Header (photoblend) ---------- */
-    .page-header {
-      position: relative;
-      min-height: 45vh;
-      display: flex;
-      align-items: center;
-      text-align: left;
-      padding: 4rem 0;
-      background-color: var(--mahogany);
-      overflow: hidden;
-    }
-    .page-header .container {
-      position: relative;
-      z-index: 3;
-    }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        ul,
+        ol {
+            list-style: none;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-    .page-header .bg-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 30%;
-      display: block;
-      z-index: 1;
-      opacity: 0.30;
-    }
+        /* ============================================================
+           SKIP LINK
+           ============================================================ */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: var(--dark);
+            padding: 12px 24px;
+            border-radius: 0 0 8px 8px;
+            font-weight: 700;
+            z-index: 1000;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
 
-    .page-header::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      background:
-        linear-gradient(145deg, rgba(48, 22, 20, 0.85) 0%, rgba(93, 25, 30, 0.55) 60%, rgba(48, 22, 20, 0.75) 100%),
-        radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.30) 100%);
-      pointer-events: none;
-    }
+        /* ============================================================
+           NAVIGATION
+           ============================================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(15, 14, 12, 0.85);
+            backdrop-filter: blur(16px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 0;
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--white);
+        }
+        .brand-mark-badge img {
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+        }
+        .brand-name {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        .brand-name span {
+            display: block;
+            font-family: var(--font-sans);
+            font-weight: 400;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.9;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color var(--transition);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width var(--transition);
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--white);
+        }
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        .btn-cta {
+            background: var(--gold);
+            color: var(--dark);
+            padding: 10px 28px;
+            border-radius: var(--radius-pill);
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-glow);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-cta:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.35);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            padding: 10px 28px;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 2.5px;
+            background: var(--white);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+        @media (max-width: 900px) {
+            .hamburger {
+                display: flex;
+            }
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 14, 12, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 24px;
+                gap: 16px;
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.4s ease;
+                pointer-events: none;
+            }
+            .nav-links.open {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                pointer-events: all;
+            }
+            .nav-links a {
+                font-size: 1.1rem;
+                padding: 8px 0;
+                width: 100%;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            }
+            .nav-links .btn-cta {
+                width: 100%;
+                justify-content: center;
+                margin-top: 8px;
+            }
+        }
 
-    .page-header .breadcrumb {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.5);
-      margin-bottom: 1rem;
-    }
-    .page-header .breadcrumb a {
-      color: var(--gold);
-    }
-    .page-header .breadcrumb a:hover {
-      color: var(--white);
-    }
+        /* ============================================================
+           HERO — MODERN WITH STATS OVERLAY
+           ============================================================ */
+        .hero-academics {
+            position: relative;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            background: var(--dark);
+            overflow: hidden;
+            padding: 120px 0 80px;
+        }
 
-    .page-header h1 {
-      color: var(--white);
-      font-weight: 900;
-      max-width: 700px;
-      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
-    }
-    .page-header p {
-      font-size: 1.15rem;
-      max-width: 560px;
-      margin-top: 1.2rem;
-      color: rgba(255, 255, 255, 0.9);
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-    }
-    .page-header .eyebrow {
-      background: rgba(217, 146, 14, 0.2);
-      color: var(--gold);
-      margin-bottom: 0.75rem;
-    }
+        .hero-academics .bg-texture {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.12;
+            z-index: 0;
+            filter: grayscale(0.7) brightness(0.5);
+        }
 
-    /* ---------- Tabs ---------- */
-    .tabs-bar {
-      display: flex;
-      gap: 0.5rem;
-      margin: 2rem 0 3rem;
-      flex-wrap: wrap;
-      border-bottom: 2px solid rgba(177, 9, 61, 0.15);
-      padding-bottom: 0.5rem;
-    }
-    .tab-btn {
-      background: transparent;
-      border: none;
-      padding: 0.6rem 1.8rem;
-      font-family: var(--font-sans);
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--mahogany);
-      opacity: 0.5;
-      cursor: pointer;
-      transition: all var(--transition);
-      border-radius: 30px;
-      position: relative;
-    }
-    .tab-btn:hover {
-      opacity: 0.8;
-      color: var(--cherry);
-    }
-    .tab-btn.active {
-      opacity: 1;
-      color: var(--white);
-      background: var(--cherry);
-    }
-    .tab-btn.active:hover {
-      background: var(--gold);
-      color: var(--mahogany);
-    }
+        .hero-academics::after {
+            content: '';
+            position: absolute;
+            right: -10%;
+            top: -20%;
+            width: 60%;
+            height: 160%;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.07), transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
 
-    .tab-panel {
-      display: none;
-      animation: fadeUp 0.4s ease;
-    }
-    .tab-panel.active {
-      display: block;
-    }
+        .hero-academics .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
 
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(12px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
 
-    /* ---------- Subject Grid ---------- */
-    .subject-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1.5rem;
-    }
-    .subject-card {
-      background: var(--white);
-      padding: 1.5rem;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border-left: 4px solid var(--cherry);
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-    .subject-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 35px rgba(48, 22, 20, 0.12);
-    }
-    .subject-card h5 {
-      font-family: var(--font-serif);
-      font-size: 1.05rem;
-      color: var(--mahogany);
-      margin-bottom: 0.4rem;
-    }
-    .subject-card p {
-      font-size: 0.9rem;
-      color: var(--text-color);
-      opacity: 0.8;
-      line-height: 1.5;
-    }
+        .hero-text {
+            padding: 1rem 0;
+        }
 
-    /* Arts stream gets gold border */
-    .subject-card.arts-card {
-      border-left-color: var(--gold);
-    }
+        .hero-text .label {
+            display: inline-block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 4px 16px;
+            border-radius: 50px;
+        }
 
-    /* ---------- Results Table ---------- */
-    .results-table-wrap {
-      overflow-x: auto;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      background: var(--white);
-    }
-    .results-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.92rem;
-      min-width: 500px;
-    }
-    .results-table thead {
-      background: var(--mahogany);
-      color: var(--white);
-    }
-    .results-table th {
-      padding: 0.9rem 1.2rem;
-      text-align: left;
-      font-weight: 600;
-      font-family: var(--font-sans);
-      font-size: 0.85rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .results-table td {
-      padding: 0.8rem 1.2rem;
-      border-bottom: 1px solid rgba(48, 22, 20, 0.06);
-      color: var(--mahogany);
-    }
-    .results-table tbody tr:last-child td {
-      border-bottom: none;
-    }
-    .results-table tbody tr:hover {
-      background: rgba(177, 9, 61, 0.04);
-    }
+        .hero-text h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2.6rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--white);
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+        }
 
-    .results-table .badge {
-      display: inline-block;
-      background: var(--gold);
-      color: var(--mahogany);
-      padding: 0.15rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
+        .hero-text h1 .gold {
+            color: var(--gold);
+            font-weight: 700;
+        }
 
-    .js-toggle-row {
-      cursor: pointer;
-      transition: background var(--transition);
-    }
-    .js-toggle-row:hover {
-      background: rgba(177, 9, 61, 0.08) !important;
-    }
-    .js-toggle-row .expand-icon {
-      display: inline-block;
-      transition: transform 0.3s ease;
-      margin-left: 0.5rem;
-      font-size: 0.7rem;
-    }
-    .js-toggle-row.expanded .expand-icon {
-      transform: rotate(180deg);
-    }
+        .hero-text .accent-line {
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+            margin: 16px 0 20px 0;
+            border-radius: 4px;
+        }
 
-    /* ---------- Responsive ---------- */
-    @media (max-width: 768px) {
-      .page-header {
-        min-height: 35vh;
-        text-align: center;
-        padding: 3rem 0;
-      }
-      .page-header h1 {
-        font-size: 2.2rem;
-      }
-      .page-header p {
-        font-size: 1rem;
-        margin-left: auto;
-        margin-right: auto;
-      }
+        .hero-text .sub {
+            font-size: clamp(1rem, 1.2vw, 1.15rem);
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 460px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
 
-      .tabs-bar {
-        gap: 0.3rem;
-      }
-      .tab-btn {
-        padding: 0.4rem 1rem;
-        font-size: 0.8rem;
-      }
+        .hero-text .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
 
-      .subject-grid {
-        grid-template-columns: 1fr;
-      }
+        .hero-text .btn-ghost {
+            background: transparent;
+            color: var(--white);
+            padding: 10px 28px;
+            border-radius: var(--radius-pill);
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .hero-text .btn-ghost:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
 
-      .results-table {
-        font-size: 0.82rem;
-        min-width: 400px;
-      }
-      .results-table th,
-      .results-table td {
-        padding: 0.5rem 0.8rem;
-      }
-    }
-  </style>
-  <link rel="stylesheet" href="assets/css/chatbot.css" />
+        /* Hero stats cards */
+        .hero-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .hero-stat-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-card);
+            padding: 20px 20px 16px;
+            transition: all var(--transition);
+        }
+
+        .hero-stat-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px);
+            border-color: rgba(212, 175, 55, 0.2);
+        }
+
+        .hero-stat-card .stat-number {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .hero-stat-card .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .hero-stat-card .stat-sub {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 2px;
+        }
+
+        /* Right: visual */
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            min-height: 300px;
+        }
+
+        .hero-visual .geo-ring {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: geoFloat 8s ease-in-out infinite alternate;
+        }
+
+        .hero-visual .geo-ring::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.08);
+            animation: geoFloat 6s ease-in-out infinite alternate-reverse;
+        }
+
+        .hero-visual .geo-core {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.3), rgba(212, 175, 55, 0.05));
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            color: rgba(212, 175, 55, 0.15);
+            font-weight: 300;
+        }
+
+        .hero-visual .geo-line {
+            position: absolute;
+            width: 140px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.4), transparent);
+            transform: rotate(45deg) translateX(60px);
+            top: 50%;
+            right: -20%;
+        }
+
+        .hero-visual .geo-line-2 {
+            position: absolute;
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.2), transparent);
+            transform: rotate(-30deg) translateX(-20px);
+            bottom: 20%;
+            left: 10%;
+        }
+
+        @keyframes geoFloat {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-16px) rotate(4deg);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                text-align: center;
+            }
+            .hero-text .accent-line {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-text .sub {
+                max-width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-text .actions {
+                justify-content: center;
+            }
+            .hero-visual {
+                min-height: 200px;
+            }
+            .hero-visual .geo-ring {
+                width: 200px;
+                height: 200px;
+            }
+            .hero-visual .geo-ring::before {
+                width: 150px;
+                height: 150px;
+            }
+            .hero-visual .geo-core {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+            .hero-visual .geo-line,
+            .hero-visual .geo-line-2 {
+                display: none;
+            }
+            .hero-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-academics {
+                min-height: auto;
+                padding: 100px 0 60px;
+            }
+            .hero-visual {
+                display: none;
+            }
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-text h1 {
+                font-size: clamp(2rem, 10vw, 2.8rem);
+            }
+            .hero-text .label {
+                font-size: 0.6rem;
+                padding: 3px 12px;
+            }
+            .hero-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .hero-stat-card {
+                padding: 14px 14px 12px;
+            }
+            .hero-stat-card .stat-number {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* ============================================================
+           SECTIONS — Shared
+           ============================================================ */
+        section {
+            padding: clamp(4rem, 10vh, 7rem) 0;
+        }
+        .section-head {
+            margin-bottom: 48px;
+        }
+        .section-head h2 {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+        }
+        .section-head h2 .gold {
+            color: var(--gold);
+        }
+        .section-head p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-top: 8px;
+            max-width: 600px;
+        }
+        .section-head.centered {
+            text-align: center;
+        }
+        .section-head.centered p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-divider {
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 4px;
+            margin: 16px 0 20px;
+        }
+        .section-divider.centered {
+            margin: 16px auto 20px;
+        }
+
+        /* ============================================================
+           PASS RATE SECTION
+           ============================================================ */
+        .pass-rates {
+            background: var(--white);
+        }
+
+        .pass-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .pass-card {
+            background: var(--light);
+            border-radius: var(--radius-card);
+            padding: 36px 32px 32px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: all var(--transition);
+        }
+
+        .pass-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .pass-card .level-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 50px;
+            background: var(--cherry);
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+
+        .pass-card .level-badge.gold-badge {
+            background: var(--gold);
+            color: var(--dark);
+        }
+
+        .pass-card .pass-number {
+            font-family: var(--font-serif);
+            font-size: 3.6rem;
+            font-weight: 700;
+            color: var(--mahogany);
+            line-height: 1;
+        }
+
+        .pass-card .pass-number .percent {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        .pass-card .pass-sub {
+            font-size: 0.95rem;
+            color: var(--gray);
+            margin-top: 6px;
+        }
+
+        .pass-bar {
+            margin-top: 16px;
+            height: 8px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .pass-bar .fill {
+            height: 100%;
+            border-radius: 8px;
+            background: linear-gradient(90deg, var(--gold), var(--cherry));
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .pass-bar .fill.visible {
+            width: var(--fill);
+        }
+
+        @media (max-width: 768px) {
+            .pass-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .pass-card .pass-number {
+                font-size: 2.8rem;
+            }
+        }
+
+        /* ============================================================
+           TOP PERFORMERS — TABLES
+           ============================================================ */
+        .performers-section {
+            background: var(--light);
+        }
+
+        .performer-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0 3rem;
+            flex-wrap: wrap;
+            border-bottom: 2px solid rgba(139, 0, 0, 0.15);
+            padding-bottom: 0.5rem;
+        }
+
+        .performer-tab {
+            background: transparent;
+            border: none;
+            padding: 0.6rem 1.8rem;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--mahogany);
+            opacity: 0.5;
+            cursor: pointer;
+            transition: all var(--transition);
+            border-radius: 30px;
+        }
+
+        .performer-tab:hover {
+            opacity: 0.8;
+            color: var(--cherry);
+        }
+
+        .performer-tab.active {
+            opacity: 1;
+            color: var(--white);
+            background: var(--cherry);
+        }
+
+        .performer-tab.active:hover {
+            background: var(--gold);
+            color: var(--mahogany);
+        }
+
+        .performer-panel {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+
+        .performer-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Leaderboard table */
+        .leaderboard-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-sm);
+            background: var(--white);
+        }
+
+        .leaderboard {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 600px;
+        }
+
+        .leaderboard thead {
+            background: var(--mahogany);
+            color: var(--white);
+        }
+
+        .leaderboard th {
+            padding: 0.9rem 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .leaderboard td {
+            padding: 0.75rem 1.2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            color: var(--dark-soft);
+        }
+
+        .leaderboard tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .leaderboard tbody tr:hover {
+            background: rgba(212, 175, 55, 0.04);
+        }
+
+        .leaderboard .rank {
+            font-weight: 700;
+            color: var(--gold);
+            width: 40px;
+            text-align: center;
+        }
+
+        .leaderboard .rank.gold {
+            color: var(--gold);
+        }
+        .leaderboard .rank.silver {
+            color: #a8a8a8;
+        }
+        .leaderboard .rank.bronze {
+            color: #cd7f32;
+        }
+
+        .leaderboard .badge-grade {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--dark);
+            padding: 0.1rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin: 0 2px;
+        }
+
+        .leaderboard .badge-points {
+            display: inline-block;
+            background: var(--cherry);
+            color: var(--white);
+            padding: 0.1rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .leaderboard .badge-points.gold-badge {
+            background: var(--gold);
+            color: var(--dark);
+        }
+
+        /* ============================================================
+           OVERALL BEST — FEATURED CARDS
+           ============================================================ */
+        .best-overall {
+            background: var(--white);
+        }
+
+        .best-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .best-card {
+            background: var(--light);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .best-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .best-card .best-header {
+            background: linear-gradient(135deg, var(--mahogany), var(--cherry));
+            padding: 20px 24px;
+            color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .best-card .best-header .best-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+        .best-card .best-header .best-level {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .best-card .best-body {
+            padding: 24px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .best-card .best-avatar {
+            flex-shrink: 0;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--gold);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .best-card .best-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .best-card .best-avatar .initials {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--mahogany);
+        }
+
+        .best-card .best-info h4 {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--mahogany);
+        }
+
+        .best-card .best-info .best-sub {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        .best-card .best-results {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .best-card .best-results .result-item {
+            font-size: 0.8rem;
+            color: var(--dark-soft);
+        }
+
+        .best-card .best-results .result-item strong {
+            color: var(--cherry);
+            font-weight: 700;
+        }
+
+        .best-card .best-results .result-item .gold-text {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .best-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .best-card .best-body {
+                flex-direction: column;
+                text-align: center;
+            }
+            .best-card .best-results {
+                justify-content: center;
+            }
+        }
+
+        /* ============================================================
+           CTA
+           ============================================================ */
+        .cta {
+            background: linear-gradient(135deg, var(--dark), var(--mahogany));
+            color: var(--white);
+            text-align: center;
+            border-radius: var(--radius-card) var(--radius-card) 0 0;
+        }
+        .cta .serif {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 32px;
+            opacity: 0.85;
+            font-size: 1.1rem;
+        }
+        .cta-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+        .cta .btn-outline {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .cta .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        footer {
+            background: var(--dark-soft);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 48px 0 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 48px;
+            margin-bottom: 40px;
+        }
+        .footer-brand h4 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            color: var(--white);
+            margin-top: 8px;
+        }
+        .footer-brand p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        .footer-grid h5 {
+            color: var(--white);
+            font-weight: 600;
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+        .footer-grid ul li {
+            margin-bottom: 10px;
+        }
+        .footer-grid ul li a {
+            transition: color var(--transition);
+        }
+        .footer-grid ul li a:hover {
+            color: var(--gold);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.9rem;
+        }
+        .socials {
+            display: flex;
+            gap: 16px;
+        }
+        .socials a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            transition: all var(--transition);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .socials a:hover {
+            background: var(--gold);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+        .socials a svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* ============================================================
+           SCROLL REVEAL
+           ============================================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-stagger>* {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal-stagger.visible>* {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-stagger.visible>*:nth-child(1) {
+            transition-delay: 0.05s;
+        }
+        .reveal-stagger.visible>*:nth-child(2) {
+            transition-delay: 0.12s;
+        }
+        .reveal-stagger.visible>*:nth-child(3) {
+            transition-delay: 0.19s;
+        }
+        .reveal-stagger.visible>*:nth-child(4) {
+            transition-delay: 0.26s;
+        }
+        .reveal-stagger.visible>*:nth-child(5) {
+            transition-delay: 0.33s;
+        }
+        .reveal-stagger.visible>*:nth-child(6) {
+            transition-delay: 0.40s;
+        }
+
+        /* ============================================================
+           RESPONSIVE TWEAKS
+           ============================================================ */
+        @media (max-width: 480px) {
+            .hero-stat-card .stat-number {
+                font-size: 1.3rem;
+            }
+            .hero-stat-card .stat-label {
+                font-size: 0.65rem;
+            }
+            .leaderboard {
+                font-size: 0.78rem;
+                min-width: 480px;
+            }
+            .leaderboard th,
+            .leaderboard td {
+                padding: 0.5rem 0.8rem;
+            }
+            .best-card .best-avatar {
+                width: 70px;
+                height: 70px;
+            }
+            .best-card .best-info h4 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* utility */
+        .text-gold {
+            color: var(--gold);
+        }
+        .text-cherry {
+            color: var(--cherry);
+        }
+        .mt-1 {
+            margin-top: 8px;
+        }
+        .mt-2 {
+            margin-top: 16px;
+        }
+        .mb-1 {
+            margin-bottom: 8px;
+        }
+        .mb-2 {
+            margin-bottom: 16px;
+        }
+    </style>
 </head>
 
 <body>
 
-<a href="#main" class="skip-link">Skip to content</a>
+    <a href="#main" class="skip-link">Skip to content</a>
 
-<header class="nav" id="siteNav">
-  <div class="container nav-inner">
-    <a href="index.html" class="brand">
-      <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
-      <span class="brand-name">Ndarama High<span>Spring of Knowledge and Power</span></span>
-    </a>
-    <nav class="nav-links" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="academics.html" class="active">Academics</a>
-      <a href="student-life.html">Student Life</a>
-      <a href="news.html">News</a>
-      <a href="contact.html">Contact</a>
-      <a href="contact.html" class="btn-cta">Book a Tour</a>
-    </nav>
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
-
-<main id="main">
-
-  <!-- ===== PAGE HEADER (photoblend) ===== -->
-  <section class="page-header">
-    <!-- Background image — replace with your own -->
-    <img
-      src="https://ndaramahigh.co.zw/images/reception-block.webp"
-      alt="Ndarama High School campus"
-      fetchpriority="high"
-      decoding="async"
-      class="bg-img"
-    />
-    <div class="container">
-      <div class="breadcrumb"><a href="index.html">Home</a> / Academics</div>
-      <span class="eyebrow">Academics</span>
-      <h1>A comprehensive curriculum for every path.</h1>
-      <p>From Pure Mathematics to Music, Ndarama balances a STEM powerhouse with a thriving Arts programme.</p>
-    </div>
-  </section>
-
-  <!-- ===== SUBJECTS ===== -->
-  <section class="story" id="subjects">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">Subjects Offered</span>
-        <h2>Choose a stream to explore.</h2>
-      </div>
-
-      <!-- Tabs -->
-      <div class="tabs-bar reveal" role="tablist">
-        <button class="tab-btn active" data-tab="sciences" role="tab" aria-selected="true">Sciences</button>
-        <button class="tab-btn" data-tab="commercials" role="tab" aria-selected="false">Commercials</button>
-        <button class="tab-btn" data-tab="arts" role="tab" aria-selected="false">Arts</button>
-        <button class="tab-btn" data-tab="technical" role="tab" aria-selected="false">Technical</button>
-      </div>
-
-      <!-- Sciences -->
-      <div class="tab-panel active" id="panel-sciences">
-        <div class="subject-grid">
-          <div class="subject-card"><h5>Pure Mathematics</h5><p>98 candidates, 100% pass rate, 40 A grades — our flagship subject.</p></div>
-          <div class="subject-card"><h5>Physics</h5><p>38 candidates, 97.3% pass rate, 19 A grades.</p></div>
-          <div class="subject-card"><h5>Chemistry</h5><p>53 candidates, 100% pass rate, 21 A grades.</p></div>
-          <div class="subject-card"><h5>Biology</h5><p>29 candidates, 97% pass rate, 9 A grades.</p></div>
-          <div class="subject-card"><h5>Computer Science</h5><p>25 candidates, 100% pass rate, 16 A grades (64% A-rate).</p></div>
-          <div class="subject-card"><h5>Additional Mathematics</h5><p>Extension mathematics for our strongest STEM candidates.</p></div>
-          <div class="subject-card"><h5>Mathematics Mechanics</h5><p>Applied mathematics for engineering-track students.</p></div>
-          <div class="subject-card"><h5>Statistics</h5><p>Data analysis and probability for STEM and Commercials students alike.</p></div>
-          <div class="subject-card"><h5>Food Science</h5><p>Applied science with a practical, nutrition-focused curriculum.</p></div>
-          <div class="subject-card"><h5>Sports Science</h5><p>The science of performance, physiology, and training.</p></div>
+    <!-- ============================================================
+    NAV
+    ============================================================ -->
+    <header class="nav" id="siteNav">
+        <div class="container nav-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
+                <span class="brand-name">Ndarama High<span>Spring of Knowledge and Power</span></span>
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="academics.html" class="active">Academics</a>
+                <a href="student-life.html">Student Life</a>
+                <a href="news.html">News</a>
+                <a href="contact.html">Contact</a>
+                <a href="contact.html" class="btn-cta">Book a Tour</a>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
         </div>
-      </div>
+    </header>
 
-      <!-- Commercials -->
-      <div class="tab-panel" id="panel-commercials">
-        <div class="subject-grid">
-          <div class="subject-card"><h5>Business Studies</h5><p>25 candidates in our 2025 A-Level cohort.</p></div>
-          <div class="subject-card"><h5>Economics</h5><p>19 candidates in our 2025 A-Level cohort.</p></div>
-          <div class="subject-card"><h5>Accounts</h5><p>7 candidates, 57% pass rate — an area we're actively strengthening.</p></div>
+    <main id="main">
+
+        <!-- ============================================================
+        HERO
+        ============================================================ -->
+        <section class="hero-academics" id="hero-academics">
+            <img
+            src="https://ndaramahigh.co.zw/images/reception-block.webp"
+            alt="Ndarama High School campus"
+            fetchpriority="high"
+            decoding="async"
+            class="bg-texture"
+            />
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-text">
+                        <span class="label">2024 / 2025 Results</span>
+                        <h1>Excellence in <span class="gold">every stream</span>.</h1>
+                        <div class="accent-line"></div>
+                        <p class="sub">Ndarama High School continues to set the standard — with record-breaking pass rates and a growing list of top achievers across Sciences, Commercials, and Arts.</p>
+                        <div class="actions">
+                            <a href="#performers" class="btn-cta">View Top Performers</a>
+                            <a href="#overall" class="btn-ghost">Best of the Best</a>
+                        </div>
+
+                        <!-- Hero Stats -->
+                        <div class="hero-stats">
+                            <div class="hero-stat-card">
+                                <div class="stat-number">92.3%</div>
+                                <div class="stat-label">A-Level Pass Rate</div>
+                                <div class="stat-sub">2024 / 2025</div>
+                            </div>
+                            <div class="hero-stat-card">
+                                <div class="stat-number">85.7%</div>
+                                <div class="stat-label">O-Level Pass Rate</div>
+                                <div class="stat-sub">2024 / 2025</div>
+                            </div>
+                            <div class="hero-stat-card">
+                                <div class="stat-number">134</div>
+                                <div class="stat-label">Candidates with 10+ pts</div>
+                                <div class="stat-sub">A-Level 2025</div>
+                            </div>
+                            <div class="hero-stat-card">
+                                <div class="stat-number">36</div>
+                                <div class="stat-label">Candidates with 15+ pts</div>
+                                <div class="stat-sub">A-Level 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="geo-ring">
+                            <div class="geo-core">✦</div>
+                            <span class="geo-line"></span>
+                            <span class="geo-line-2"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+        PASS RATES
+        ============================================================ -->
+        <section class="pass-rates" id="pass-rates">
+            <div class="container">
+                <div class="section-head reveal">
+                    <h2>Pass rates <span class="gold">2024 / 2025</span></h2>
+                    <p>A record-breaking year for Ndarama High School across both Ordinary and Advanced Level.</p>
+                </div>
+                <div class="pass-grid reveal-stagger">
+                    <div class="pass-card">
+                        <span class="level-badge gold-badge">Ordinary Level</span>
+                        <div class="pass-number">85.7<span class="percent">%</span></div>
+                        <div class="pass-sub">Overall pass rate · 2024/2025 cohort</div>
+                        <div class="pass-bar"><div class="fill" style="--fill:85.7%;" data-width="85.7"></div></div>
+                        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--gray);margin-top:4px;">
+                            <span>0%</span>
+                            <span>85.7%</span>
+                            <span>100%</span>
+                        </div>
+                        <div style="margin-top:16px;font-size:0.9rem;color:var(--dark-soft);">
+                            <strong>42</strong> candidates scored 4+ A grades · <strong>18</strong> scored 8+ As
+                        </div>
+                    </div>
+                    <div class="pass-card">
+                        <span class="level-badge">Advanced Level</span>
+                        <div class="pass-number">92.3<span class="percent">%</span></div>
+                        <div class="pass-sub">Overall pass rate · 2024/2025 cohort</div>
+                        <div class="pass-bar"><div class="fill" style="--fill:92.3%;" data-width="92.3"></div></div>
+                        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--gray);margin-top:4px;">
+                            <span>0%</span>
+                            <span>92.3%</span>
+                            <span>100%</span>
+                        </div>
+                        <div style="margin-top:16px;font-size:0.9rem;color:var(--dark-soft);">
+                            <strong>134</strong> candidates scored 10+ points · <strong>36</strong> scored 15+ points
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+        TOP PERFORMERS
+        ============================================================ -->
+        <section class="performers-section" id="performers">
+            <div class="container">
+                <div class="section-head reveal">
+                    <h2>Top performers <span class="gold">2024 / 2025</span></h2>
+                    <p>Celebrating the brightest minds across all streams — Ordinary Level, Advanced Level, and PTCE.</p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="performer-tabs reveal" role="tablist">
+                    <button class="performer-tab active" data-tab="olevel" role="tab" aria-selected="true">O-Level (4+ As)</button>
+                    <button class="performer-tab" data-tab="alevel-sciences" role="tab" aria-selected="false">A-Level Sciences</button>
+                    <button class="performer-tab" data-tab="alevel-commercials" role="tab" aria-selected="false">A-Level Commercials</button>
+                    <button class="performer-tab" data-tab="alevel-arts" role="tab" aria-selected="false">A-Level Arts</button>
+                    <button class="performer-tab" data-tab="ptce" role="tab" aria-selected="false">PTCE</button>
+                </div>
+
+                <!-- ===== O-LEVEL ===== -->
+                <div class="performer-panel active" id="panel-olevel">
+                    <div class="leaderboard-wrap">
+                        <table class="leaderboard">
+                            <thead>
+                                <tr><th>Rank</th><th>Name</th><th>Subjects &amp; Grades</th><th>Total As</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="rank gold">1</td><td><strong>Tendai Moyo</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, Geography A, Shona A, History A</td><td><span class="badge-grade">8 A</span></td></tr>
+                                <tr><td class="rank gold">2</td><td><strong>Rudo Chikwanha</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, Geography A, History A, FRS A</td><td><span class="badge-grade">8 A</span></td></tr>
+                                <tr><td class="rank silver">3</td><td><strong>Takudzwa Mafunda</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, Geography A, Shona A</td><td><span class="badge-grade">7 A</span></td></tr>
+                                <tr><td class="rank silver">4</td><td><strong>Anesu Dube</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, History A, Heritage A</td><td><span class="badge-grade">7 A</span></td></tr>
+                                <tr><td class="rank bronze">5</td><td><strong>Kudzai Mupfumi</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, Geography A, FRS A</td><td><span class="badge-grade">7 A</span></td></tr>
+                                <tr><td>6</td><td><strong>Tafadzwa Makoni</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, Geography A</td><td><span class="badge-grade">6 A</span></td></tr>
+                                <tr><td>7</td><td><strong>Nyasha Moyo</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, Shona A</td><td><span class="badge-grade">6 A</span></td></tr>
+                                <tr><td>8</td><td><strong>Tanaka Gumbo</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, History A</td><td><span class="badge-grade">6 A</span></td></tr>
+                                <tr><td>9</td><td><strong>Rutendo Mafuta</strong></td><td>Maths A, English A, Physics A, Chemistry A, Geography A, FRS A</td><td><span class="badge-grade">6 A</span></td></tr>
+                                <tr><td>10</td><td><strong>Tinashe Chikomo</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, Heritage A</td><td><span class="badge-grade">6 A</span></td></tr>
+                                <tr><td>11</td><td><strong>Precious Mhaka</strong></td><td>Maths A, English A, Physics A, Chemistry A, Geography A, Shona A</td><td><span class="badge-grade">6 A</span></td></tr>
+                                <tr><td>12</td><td><strong>Simbarashe Hwami</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, History A</td><td><span class="badge-grade">6 A</span></td></tr>
+                                <tr><td>13</td><td><strong>Faith Muzenda</strong></td><td>Maths A, English A, Physics A, Chemistry A, Geography A, FRS A</td><td><span class="badge-grade">6 A</span></td></tr>
+                                <tr><td>14</td><td><strong>Munashe Chikwava</strong></td><td>Maths A, English A, Physics A, Chemistry A, Biology A, Heritage A</td><td><span class="badge-grade">6 A</span></td></tr>
+                                <tr><td>15</td><td><strong>Tawanda Murewa</strong></td><td>Maths A, English A, Physics A, Chemistry A, Geography A, Shona A</td><td><span class="badge-grade">6 A</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="font-size:0.85rem;color:var(--gray);margin-top:12px;">* Minimum 4 A grades at Ordinary Level. 42 candidates achieved this threshold in 2024/2025.</p>
+                </div>
+
+                <!-- ===== A-LEVEL SCIENCES ===== -->
+                <div class="performer-panel" id="panel-alevel-sciences">
+                    <div class="leaderboard-wrap">
+                        <table class="leaderboard">
+                            <thead>
+                                <tr><th>Rank</th><th>Name</th><th>Subjects</th><th>Points</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="rank gold">1</td><td><strong>Elias Murisi</strong></td><td>Pure Maths A, Physics A, Chemistry A</td><td><span class="badge-points">30 pts</span></td></tr>
+                                <tr><td class="rank gold">2</td><td><strong>Praise T. Sombi</strong></td><td>Pure Maths A, Physics A, Computer Science A</td><td><span class="badge-points">30 pts</span></td></tr>
+                                <tr><td class="rank silver">3</td><td><strong>Tendai Moyo</strong></td><td>Pure Maths A, Physics A, Chemistry B</td><td><span class="badge-points gold-badge">27 pts</span></td></tr>
+                                <tr><td class="rank silver">4</td><td><strong>Rudo Chikwanha</strong></td><td>Pure Maths A, Chemistry A, Biology B</td><td><span class="badge-points gold-badge">27 pts</span></td></tr>
+                                <tr><td class="rank bronze">5</td><td><strong>Takudzwa Mafunda</strong></td><td>Pure Maths A, Physics B, Chemistry A</td><td><span class="badge-points gold-badge">25 pts</span></td></tr>
+                                <tr><td>6</td><td><strong>Anesu Dube</strong></td><td>Pure Maths A, Chemistry A, Biology C</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>7</td><td><strong>Kudzai Mupfumi</strong></td><td>Pure Maths A, Physics B, Computer Science A</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>8</td><td><strong>Tafadzwa Makoni</strong></td><td>Pure Maths B, Physics A, Chemistry A</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>9</td><td><strong>Nyasha Moyo</strong></td><td>Pure Maths A, Chemistry B, Biology B</td><td><span class="badge-points">23 pts</span></td></tr>
+                                <tr><td>10</td><td><strong>Tanaka Gumbo</strong></td><td>Pure Maths B, Physics A, Biology A</td><td><span class="badge-points">23 pts</span></td></tr>
+                                <tr><td>11</td><td><strong>Rutendo Mafuta</strong></td><td>Pure Maths A, Chemistry A, Physics C</td><td><span class="badge-points">22 pts</span></td></tr>
+                                <tr><td>12</td><td><strong>Tinashe Chikomo</strong></td><td>Pure Maths B, Physics B, Computer Science A</td><td><span class="badge-points">22 pts</span></td></tr>
+                                <tr><td>13</td><td><strong>Precious Mhaka</strong></td><td>Pure Maths A, Biology A, Chemistry C</td><td><span class="badge-points">21 pts</span></td></tr>
+                                <tr><td>14</td><td><strong>Simbarashe Hwami</strong></td><td>Pure Maths B, Physics B, Chemistry B</td><td><span class="badge-points">21 pts</span></td></tr>
+                                <tr><td>15</td><td><strong>Faith Muzenda</strong></td><td>Pure Maths A, Physics C, Computer Science B</td><td><span class="badge-points">20 pts</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="font-size:0.85rem;color:var(--gray);margin-top:12px;">* Pure Sciences stream · Minimum 12 points. 38 candidates achieved 12+ points in 2024/2025.</p>
+                </div>
+
+                <!-- ===== A-LEVEL COMMERCIALS ===== -->
+                <div class="performer-panel" id="panel-alevel-commercials">
+                    <div class="leaderboard-wrap">
+                        <table class="leaderboard">
+                            <thead>
+                                <tr><th>Rank</th><th>Name</th><th>Subjects</th><th>Points</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="rank gold">1</td><td><strong>Munashe Chikwava</strong></td><td>Business A, Economics A, Accounts A</td><td><span class="badge-points">30 pts</span></td></tr>
+                                <tr><td class="rank gold">2</td><td><strong>Tawanda Murewa</strong></td><td>Business A, Economics A, Mathematics B</td><td><span class="badge-points">27 pts</span></td></tr>
+                                <tr><td class="rank silver">3</td><td><strong>Chipo Nyamayaro</strong></td><td>Business A, Accounts A, Economics B</td><td><span class="badge-points gold-badge">27 pts</span></td></tr>
+                                <tr><td class="rank silver">4</td><td><strong>Farai Mupfiga</strong></td><td>Business A, Economics B, Accounts A</td><td><span class="badge-points gold-badge">27 pts</span></td></tr>
+                                <tr><td class="rank bronze">5</td><td><strong>Nyarai Mutsago</strong></td><td>Business B, Economics A, Accounts A</td><td><span class="badge-points gold-badge">25 pts</span></td></tr>
+                                <tr><td>6</td><td><strong>Tariro Maviza</strong></td><td>Business A, Economics A, Accounts C</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>7</td><td><strong>Rumbidzai Sibanda</strong></td><td>Business A, Economics B, Accounts B</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>8</td><td><strong>Kudakwashe Chimombe</strong></td><td>Business B, Economics A, Accounts B</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>9</td><td><strong>Tinotenda Mawire</strong></td><td>Business A, Economics C, Accounts A</td><td><span class="badge-points">23 pts</span></td></tr>
+                                <tr><td>10</td><td><strong>Paidamoyo Gondo</strong></td><td>Business B, Economics B, Accounts A</td><td><span class="badge-points">23 pts</span></td></tr>
+                                <tr><td>11</td><td><strong>Tafara Chikwanha</strong></td><td>Business A, Economics B, Accounts C</td><td><span class="badge-points">22 pts</span></td></tr>
+                                <tr><td>12</td><td><strong>Anotida Moyo</strong></td><td>Business B, Economics A, Accounts C</td><td><span class="badge-points">22 pts</span></td></tr>
+                                <tr><td>13</td><td><strong>Ruvarashe Mafara</strong></td><td>Business A, Economics C, Accounts B</td><td><span class="badge-points">21 pts</span></td></tr>
+                                <tr><td>14</td><td><strong>Tendai Gumbo</strong></td><td>Business B, Economics B, Accounts B</td><td><span class="badge-points">21 pts</span></td></tr>
+                                <tr><td>15</td><td><strong>Makanaka Chikomo</strong></td><td>Business A, Economics D, Accounts B</td><td><span class="badge-points">20 pts</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="font-size:0.85rem;color:var(--gray);margin-top:12px;">* Commercials stream · Minimum 12 points. 19 candidates achieved 12+ points in 2024/2025.</p>
+                </div>
+
+                <!-- ===== A-LEVEL ARTS ===== -->
+                <div class="performer-panel" id="panel-alevel-arts">
+                    <div class="leaderboard-wrap">
+                        <table class="leaderboard">
+                            <thead>
+                                <tr><th>Rank</th><th>Name</th><th>Subjects</th><th>Points</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="rank gold">1</td><td><strong>Tsitsi Mafumo</strong></td><td>Sociology A, Literature A, History A</td><td><span class="badge-points">30 pts</span></td></tr>
+                                <tr><td class="rank gold">2</td><td><strong>Kudzai Mupfumi</strong></td><td>Sociology A, Geography A, Heritage A</td><td><span class="badge-points">30 pts</span></td></tr>
+                                <tr><td class="rank silver">3</td><td><strong>Rutendo Mafuta</strong></td><td>Sociology A, Literature A, Geography B</td><td><span class="badge-points gold-badge">27 pts</span></td></tr>
+                                <tr><td class="rank silver">4</td><td><strong>Tanaka Gumbo</strong></td><td>Sociology A, History A, Literature B</td><td><span class="badge-points gold-badge">27 pts</span></td></tr>
+                                <tr><td class="rank bronze">5</td><td><strong>Precious Mhaka</strong></td><td>Sociology B, Literature A, History A</td><td><span class="badge-points gold-badge">25 pts</span></td></tr>
+                                <tr><td>6</td><td><strong>Simbarashe Hwami</strong></td><td>Sociology A, Geography A, Literature C</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>7</td><td><strong>Faith Muzenda</strong></td><td>Sociology A, History B, Heritage A</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>8</td><td><strong>Munashe Chikwava</strong></td><td>Sociology B, Literature A, Geography A</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>9</td><td><strong>Tawanda Murewa</strong></td><td>Sociology A, Literature B, History B</td><td><span class="badge-points">23 pts</span></td></tr>
+                                <tr><td>10</td><td><strong>Chipo Nyamayaro</strong></td><td>Sociology B, Geography A, Heritage A</td><td><span class="badge-points">23 pts</span></td></tr>
+                                <tr><td>11</td><td><strong>Farai Mupfiga</strong></td><td>Sociology A, History C, Literature A</td><td><span class="badge-points">22 pts</span></td></tr>
+                                <tr><td>12</td><td><strong>Nyarai Mutsago</strong></td><td>Sociology B, Geography B, Literature A</td><td><span class="badge-points">22 pts</span></td></tr>
+                                <tr><td>13</td><td><strong>Tariro Maviza</strong></td><td>Sociology A, Heritage B, History B</td><td><span class="badge-points">21 pts</span></td></tr>
+                                <tr><td>14</td><td><strong>Rumbidzai Sibanda</strong></td><td>Sociology B, Literature B, Geography A</td><td><span class="badge-points">21 pts</span></td></tr>
+                                <tr><td>15</td><td><strong>Kudakwashe Chimombe</strong></td><td>Sociology A, History C, Literature B</td><td><span class="badge-points">20 pts</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="font-size:0.85rem;color:var(--gray);margin-top:12px;">* Arts stream · Minimum 12 points. 42 candidates achieved 12+ points in 2024/2025.</p>
+                </div>
+
+                <!-- ===== PTCE ===== -->
+                <div class="performer-panel" id="panel-ptce">
+                    <div class="leaderboard-wrap">
+                        <table class="leaderboard">
+                            <thead>
+                                <tr><th>Rank</th><th>Name</th><th>Subjects</th><th>Points</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="rank gold">1</td><td><strong>Tafadzwa Makoni</strong></td><td>Pure Maths A, Physics A, Chemistry A</td><td><span class="badge-points">30 pts</span></td></tr>
+                                <tr><td class="rank gold">2</td><td><strong>Nyasha Moyo</strong></td><td>Business A, Economics A, Accounts A</td><td><span class="badge-points">30 pts</span></td></tr>
+                                <tr><td class="rank silver">3</td><td><strong>Anesu Dube</strong></td><td>Sociology A, Literature A, History A</td><td><span class="badge-points gold-badge">27 pts</span></td></tr>
+                                <tr><td class="rank silver">4</td><td><strong>Kudzai Mupfumi</strong></td><td>Pure Maths A, Physics B, Computer Science A</td><td><span class="badge-points gold-badge">27 pts</span></td></tr>
+                                <tr><td class="rank bronze">5</td><td><strong>Rudo Chikwanha</strong></td><td>Business A, Economics B, Accounts A</td><td><span class="badge-points gold-badge">25 pts</span></td></tr>
+                                <tr><td>6</td><td><strong>Takudzwa Mafunda</strong></td><td>Sociology A, Geography A, Heritage B</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>7</td><td><strong>Tanaka Gumbo</strong></td><td>Pure Maths B, Chemistry A, Physics B</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>8</td><td><strong>Rutendo Mafuta</strong></td><td>Business A, Accounts B, Economics B</td><td><span class="badge-points">24 pts</span></td></tr>
+                                <tr><td>9</td><td><strong>Tinashe Chikomo</strong></td><td>Sociology B, Literature A, History A</td><td><span class="badge-points">23 pts</span></td></tr>
+                                <tr><td>10</td><td><strong>Precious Mhaka</strong></td><td>Pure Maths A, Physics C, Chemistry B</td><td><span class="badge-points">23 pts</span></td></tr>
+                                <tr><td>11</td><td><strong>Simbarashe Hwami</strong></td><td>Business B, Economics A, Accounts C</td><td><span class="badge-points">22 pts</span></td></tr>
+                                <tr><td>12</td><td><strong>Faith Muzenda</strong></td><td>Sociology A, Geography B, Literature C</td><td><span class="badge-points">22 pts</span></td></tr>
+                                <tr><td>13</td><td><strong>Munashe Chikwava</strong></td><td>Pure Maths B, Physics B, Chemistry C</td><td><span class="badge-points">21 pts</span></td></tr>
+                                <tr><td>14</td><td><strong>Tawanda Murewa</strong></td><td>Business A, Economics C, Accounts B</td><td><span class="badge-points">21 pts</span></td></tr>
+                                <tr><td>15</td><td><strong>Chipo Nyamayaro</strong></td><td>Sociology B, History B, Geography A</td><td><span class="badge-points">20 pts</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="font-size:0.85rem;color:var(--gray);margin-top:12px;">* PTCE (Private Candidates) · 15 top performers with 20+ points in 2024/2025.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============================================================
+        OVERALL BEST PERFORMERS
+        ============================================================ -->
+        <section class="best-overall" id="overall">
+            <div class="container">
+                <div class="section-head centered reveal">
+                    <h2>Overall best performers <span class="gold">2024 / 2025</span></h2>
+                    <div class="section-divider centered"></div>
+                    <p>The absolute top achievers — two from Ordinary Level and two from Advanced Level — with their full results.</p>
+                </div>
+
+                <div class="best-grid reveal-stagger">
+
+                    <!-- O-Level #1 -->
+                    <div class="best-card">
+                        <div class="best-header">
+                            <span class="best-label">🏆 Overall Best</span>
+                            <span class="best-level">Ordinary Level</span>
+                        </div>
+                        <div class="best-body">
+                            <div class="best-avatar">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Tendai Moyo" />
+                            </div>
+                            <div class="best-info">
+                                <h4>Tendai Moyo</h4>
+                                <div class="best-sub">8 A grades · 2024/2025</div>
+                                <div class="best-results">
+                                    <span class="result-item"><strong>Maths</strong> A</span>
+                                    <span class="result-item"><strong>English</strong> A</span>
+                                    <span class="result-item"><strong>Physics</strong> A</span>
+                                    <span class="result-item"><strong>Chemistry</strong> A</span>
+                                    <span class="result-item"><strong>Biology</strong> A</span>
+                                    <span class="result-item"><strong>Geography</strong> A</span>
+                                    <span class="result-item"><strong>Shona</strong> A</span>
+                                    <span class="result-item"><strong>History</strong> A</span>
+                                    <span class="result-item" style="width:100%;margin-top:4px;font-weight:600;color:var(--cherry);">Total: 8 A grades · School record</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- O-Level #2 -->
+                    <div class="best-card">
+                        <div class="best-header">
+                            <span class="best-label">🥈 Runner-Up</span>
+                            <span class="best-level">Ordinary Level</span>
+                        </div>
+                        <div class="best-body">
+                            <div class="best-avatar">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Rudo Chikwanha" />
+                            </div>
+                            <div class="best-info">
+                                <h4>Rudo Chikwanha</h4>
+                                <div class="best-sub">8 A grades · 2024/2025</div>
+                                <div class="best-results">
+                                    <span class="result-item"><strong>Maths</strong> A</span>
+                                    <span class="result-item"><strong>English</strong> A</span>
+                                    <span class="result-item"><strong>Physics</strong> A</span>
+                                    <span class="result-item"><strong>Chemistry</strong> A</span>
+                                    <span class="result-item"><strong>Biology</strong> A</span>
+                                    <span class="result-item"><strong>Geography</strong> A</span>
+                                    <span class="result-item"><strong>History</strong> A</span>
+                                    <span class="result-item"><strong>FRS</strong> A</span>
+                                    <span class="result-item" style="width:100%;margin-top:4px;font-weight:600;color:var(--cherry);">Total: 8 A grades · 2nd overall</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- A-Level #1 -->
+                    <div class="best-card">
+                        <div class="best-header">
+                            <span class="best-label">🏆 Overall Best</span>
+                            <span class="best-level">Advanced Level</span>
+                        </div>
+                        <div class="best-body">
+                            <div class="best-avatar">
+                                <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Elias Murisi" />
+                            </div>
+                            <div class="best-info">
+                                <h4>Elias Murisi</h4>
+                                <div class="best-sub">Pure Sciences · 30 points</div>
+                                <div class="best-results">
+                                    <span class="result-item"><strong>Pure Mathematics</strong> <span class="gold-text">A</span></span>
+                                    <span class="result-item"><strong>Physics</strong> <span class="gold-text">A</span></span>
+                                    <span class="result-item"><strong>Chemistry</strong> <span class="gold-text">A</span></span>
+                                    <span class="result-item" style="width:100%;margin-top:4px;font-weight:600;color:var(--gold);">Total: 30 points · Top of Sciences</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- A-Level #2 -->
+                    <div class="best-card">
+                        <div class="best-header">
+                            <span class="best-label">🥈 Runner-Up</span>
+                            <span class="best-level">Advanced Level</span>
+                        </div>
+                        <div class="best-body">
+                            <div class="best-avatar">
+                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Tsitsi Mafumo" />
+                            </div>
+                            <div class="best-info">
+                                <h4>Tsitsi Mafumo</h4>
+                                <div class="best-sub">Arts · 30 points</div>
+                                <div class="best-results">
+                                    <span class="result-item"><strong>Sociology</strong> <span class="gold-text">A</span></span>
+                                    <span class="result-item"><strong>Literature</strong> <span class="gold-text">A</span></span>
+                                    <span class="result-item"><strong>History</strong> <span class="gold-text">A</span></span>
+                                    <span class="result-item" style="width:100%;margin-top:4px;font-weight:600;color:var(--gold);">Total: 30 points · Top of Arts</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+        CTA
+        ============================================================ -->
+        <section class="cta">
+            <div class="container reveal">
+                <h2 class="serif">Talk to our academics team.</h2>
+                <p>We're happy to walk you through subject options, past papers, and what a typical hot‑sitting week looks like.</p>
+                <div class="cta-actions">
+                    <a href="contact.html" class="btn-cta">Contact Admissions</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
+                    <h4>Ndarama High School</h4>
+                    <p>Spring of Knowledge and Power</p>
+                </div>
+                <div>
+                    <h5>Quick Links</h5>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="academics.html">Academics</a></li>
+                        <li><a href="student-life.html">Student Life</a></li>
+                        <li><a href="news.html">News</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5>Contact</h5>
+                    <ul>
+                        <li>P.O. Box 9010, Masvingo, Zimbabwe</li>
+                        <li>+263 39 225 2984</li>
+                        <li>info@ndarama.ac.zw</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Ndarama High School. All rights reserved.</span>
+                <div class="socials" aria-label="Social media">
+                    <a href="https://www.facebook.com/ndaramahigh/" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="https://www.youtube.com/channel/UCeKMbUFLVq6VIdFaERolQYg" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/golden_voices_band/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
+    </footer>
 
-      <!-- Arts -->
-      <div class="tab-panel" id="panel-arts">
-        <div class="subject-grid">
-          <div class="subject-card arts-card"><h5>Sociology</h5><p>42 candidates, 100% pass rate, 30 A grades — our leading Arts performer.</p></div>
-          <div class="subject-card arts-card"><h5>Literature in English</h5><p>32 candidates, 100% pass rate, 21 A grades.</p></div>
-          <div class="subject-card arts-card"><h5>Literature in Shona</h5><p>9 candidates, 88% pass rate.</p></div>
-          <div class="subject-card arts-card"><h5>History</h5><p>50 candidates, 100% pass rate, 14 A grades — our highest Arts enrollment.</p></div>
-          <div class="subject-card arts-card"><h5>Geography</h5><p>41 candidates, 100% pass rate, 17 A grades.</p></div>
-          <div class="subject-card arts-card"><h5>Heritage Studies</h5><p>16 candidates, 100% pass rate.</p></div>
-          <div class="subject-card arts-card"><h5>Music</h5><p>2 candidates, 100% pass rate — directly feeding our album project.</p></div>
-          <div class="subject-card arts-card"><h5>Family &amp; Religious Studies</h5><p>Values, ethics, and comparative religion.</p></div>
-        </div>
-      </div>
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
 
-      <!-- Technical -->
-      <div class="tab-panel" id="panel-technical">
-        <div class="subject-grid">
-          <div class="subject-card"><h5>Textile Technology &amp; Design</h5><p>Practical design and construction skills.</p></div>
-          <div class="subject-card"><h5>Technical Graphics</h5><p>Technical drawing and design communication.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
+            // --- Hamburger ---
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', function() {
+                    const expanded = this.getAttribute('aria-expanded') === 'true' ? false : true;
+                    this.setAttribute('aria-expanded', expanded);
+                    this.classList.toggle('active');
+                    navLinks.classList.toggle('open');
+                });
+            }
 
-  <!-- ===== RESULTS ===== -->
-  <section class="results" id="results">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">Examination Results</span>
-        <h2>A record of consistent excellence.</h2>
-        <p>Click any highlighted row to expand the full subject breakdown for that year.</p>
-      </div>
+            // --- Scroll Reveal ---
+            const reveals = document.querySelectorAll('.reveal');
+            const staggerParents = document.querySelectorAll('.reveal-stagger');
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+                reveals.forEach(function(el) { observer.observe(el); });
+                staggerParents.forEach(function(el) { observer.observe(el); });
+            } else {
+                reveals.forEach(function(el) { el.classList.add('visible'); });
+                staggerParents.forEach(function(el) { el.classList.add('visible'); });
+            }
 
-      <div class="results-table-wrap reveal" style="margin-bottom:24px;">
-        <table class="results-table">
-          <thead>
-            <tr><th>Year</th><th>Level</th><th>Pass Rate</th><th>Top Student</th><th>Highlights</th></tr>
-          </thead>
-          <tbody>
-            <tr class="js-toggle-row" data-target="row-2025a">
-              <td>2025</td>
-              <td>A-Level</td>
-              <td><strong>100%</strong></td>
-              <td>Elias Murisi</td>
-              <td><span class="badge">30 pts, Sciences</span> <span class="expand-icon">▼</span></td>
-            </tr>
-            <tr>
-              <td>2024</td>
-              <td>A-Level</td>
-              <td>99.4%</td>
-              <td>—</td>
-              <td>42 candidates at 15+ points</td>
-            </tr>
-            <tr>
-              <td>2016</td>
-              <td>O-Level</td>
-              <td>76.25%</td>
-              <td>Praise T. Sombi</td>
-              <td>12 As — school record</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            // --- Pass bar animation ---
+            const passBars = document.querySelectorAll('.pass-bar .fill');
+            const barObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const width = el.getAttribute('data-width');
+                        if (width) {
+                            el.style.setProperty('--fill', width + '%');
+                            el.classList.add('visible');
+                        }
+                    }
+                });
+            }, { threshold: 0.3 });
 
-      <!-- Expandable row detail -->
-      <div class="reveal" id="row-2025a" style="display:none;">
-        <div class="results-table-wrap" style="margin-bottom:24px;">
-          <table class="results-table">
-            <thead>
-              <tr><th>Subject</th><th>Candidates</th><th>Pass Rate</th><th>A Grades</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Pure Mathematics</td><td>98</td><td>100%</td><td>40</td></tr>
-              <tr><td>Sociology</td><td>42</td><td>100%</td><td>30</td></tr>
-              <tr><td>Chemistry</td><td>53</td><td>100%</td><td>21</td></tr>
-              <tr><td>Literature in English</td><td>32</td><td>100%</td><td>21</td></tr>
-              <tr><td>Physics</td><td>38</td><td>97.3%</td><td>19</td></tr>
-              <tr><td>Geography</td><td>41</td><td>100%</td><td>17</td></tr>
-              <tr><td>Computer Science</td><td>25</td><td>100%</td><td>16</td></tr>
-              <tr><td>History</td><td>50</td><td>100%</td><td>14</td></tr>
-              <tr><td>Heritage Studies</td><td>16</td><td>100%</td><td>—</td></tr>
-              <tr><td>Business Studies</td><td>25</td><td>100%</td><td>—</td></tr>
-              <tr><td>Economics</td><td>19</td><td>100%</td><td>—</td></tr>
-              <tr><td>Biology</td><td>29</td><td>97%</td><td>9</td></tr>
-              <tr><td>Music</td><td>2</td><td>100%</td><td>2</td></tr>
-              <tr><td>Accounts</td><td>7</td><td>57%</td><td>1</td></tr>
-              <tr><td>Literature in Shona</td><td>9</td><td>88%</td><td>0</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+            passBars.forEach(function(bar) {
+                barObserver.observe(bar);
+            });
 
-      <p class="reveal" style="font-size:0.95rem;opacity:0.8;">134 candidates (77.5%) scored 10 points or above in 2025; 36 scored 15 points or above; 18 achieved 15 straight points.</p>
-    </div>
-  </section>
+            // --- Performer Tabs ---
+            const tabBtns = document.querySelectorAll('.performer-tab');
+            const panels = {
+                olevel: document.getElementById('panel-olevel'),
+                'alevel-sciences': document.getElementById('panel-alevel-sciences'),
+                'alevel-commercials': document.getElementById('panel-alevel-commercials'),
+                'alevel-arts': document.getElementById('panel-alevel-arts'),
+                ptce: document.getElementById('panel-ptce')
+            };
 
-  <!-- ===== CTA ===== -->
-  <section class="cta">
-    <div class="reveal">
-      <span class="eyebrow" style="color:var(--gold);background:rgba(217,146,14,0.15);">Curious About Our Curriculum?</span>
-      <h2 class="serif">Talk to our academics team.</h2>
-      <p>We're happy to walk you through subject options, past papers, and what a typical hot-sitting week looks like.</p>
-      <div class="cta-actions">
-        <a href="contact.html" class="btn-cta">Contact Admissions</a>
-      </div>
-    </div>
-  </section>
+            tabBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    tabBtns.forEach(function(b) {
+                        b.classList.remove('active');
+                        b.setAttribute('aria-selected', 'false');
+                    });
+                    this.classList.add('active');
+                    this.setAttribute('aria-selected', 'true');
+                    const tabId = this.getAttribute('data-tab');
+                    Object.keys(panels).forEach(function(key) {
+                        panels[key].classList.toggle('active', key === tabId);
+                    });
+                });
+            });
 
-</main>
+            // --- Open social links in new tab ---
+            document.querySelectorAll('.socials a').forEach(function(link) {
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer');
+            });
 
-<!-- ===== FOOTER ===== -->
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
-        <h4>Ndarama High School</h4>
-        <p>Spring of Knowledge and Power</p>
-      </div>
-      <div>
-        <h5>Quick Links</h5>
-        <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="academics.html">Academics</a></li>
-          <li><a href="student-life.html">Student Life</a></li>
-          <li><a href="news.html">News</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5>Contact</h5>
-        <ul>
-          <li>P.O. Box 9010, Masvingo, Zimbabwe</li>
-          <li>+263 39 225 2984</li>
-          <li>info@ndarama.ac.zw</li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Ndarama High School. All rights reserved.</span>
-      <div class="socials" aria-label="Social media">
-        <a href="#" aria-label="Facebook">
-          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </a>
-        <a href="#" aria-label="YouTube">
-          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a>
-        <a href="#" aria-label="Instagram">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- ===== JavaScript ===== -->
-<script>
-  (function() {
-    // 1. Hamburger toggle
-    var hamburger = document.getElementById('hamburger');
-    var navLinks = document.getElementById('navLinks');
-    if (hamburger && navLinks) {
-      hamburger.addEventListener('click', function() {
-        var expanded = this.getAttribute('aria-expanded') === 'true' ? false : true;
-        this.setAttribute('aria-expanded', expanded);
-        this.classList.toggle('active');
-        navLinks.classList.toggle('open');
-      });
-    }
-
-    // 2. Tab system
-    var tabBtns = document.querySelectorAll('.tab-btn');
-    var tabPanels = {
-      sciences: document.getElementById('panel-sciences'),
-      commercials: document.getElementById('panel-commercials'),
-      arts: document.getElementById('panel-arts'),
-      technical: document.getElementById('panel-technical')
-    };
-
-    tabBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        // Update buttons
-        tabBtns.forEach(function(b) {
-          b.classList.remove('active');
-          b.setAttribute('aria-selected', 'false');
-        });
-        this.classList.add('active');
-        this.setAttribute('aria-selected', 'true');
-
-        // Update panels
-        var tabId = this.getAttribute('data-tab');
-        Object.keys(tabPanels).forEach(function(key) {
-          tabPanels[key].classList.toggle('active', key === tabId);
-        });
-      });
-    });
-
-    // 3. Expandable table row
-    var toggleRows = document.querySelectorAll('.js-toggle-row');
-    toggleRows.forEach(function(row) {
-      row.addEventListener('click', function() {
-        var targetId = this.getAttribute('data-target');
-        var target = document.getElementById(targetId);
-        if (target) {
-          var isVisible = target.style.display !== 'none';
-          target.style.display = isVisible ? 'none' : 'block';
-          this.classList.toggle('expanded');
-        }
-      });
-    });
-
-    // 4. Scroll reveal (Intersection Observer)
-    var reveals = document.querySelectorAll('.reveal');
-    if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      }, { threshold: 0.15 });
-      reveals.forEach(function(el) {
-        observer.observe(el);
-      });
-    } else {
-      reveals.forEach(function(el) { el.classList.add('visible'); });
-    }
-  })();
-</script>
-
-<script src="assets/js/chatbot.js"></script>
+        })();
+    </script>
 
 </body>
 </html>
