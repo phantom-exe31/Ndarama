@@ -694,7 +694,7 @@ app.delete('/api/articles/:id', verifyToken, async (req, res) => {
 // ============================================================
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 50 * 1024 * 1024 }
+  limits: { fileSize: 200 * 1024 * 1024 } // 200MB — raised to fit video files
 });
 
 app.post('/api/upload', verifyToken, upload.single('file'), async (req, res) => {
@@ -713,10 +713,12 @@ app.post('/api/upload', verifyToken, upload.single('file'), async (req, res) => 
     if (file.mimetype.startsWith('video/')) folder = 'videos';
     else if (!file.mimetype.startsWith('image/')) folder = 'files';
 
+    // Videos go to their own bucket; everything else keeps using blog-uploads
+    const bucket = folder === 'videos' ? 'video-uploads' : 'blog-uploads';
     const filePath = `${folder}/${filename}`;
 
     const { data, error } = await admin.storage
-      .from('blog-uploads')
+      .from(bucket)
       .upload(filePath, file.buffer, {
         contentType: file.mimetype,
         cacheControl: '3600'
@@ -725,7 +727,7 @@ app.post('/api/upload', verifyToken, upload.single('file'), async (req, res) => 
     if (error) throw error;
 
     const { data: { publicUrl } } = admin.storage
-      .from('blog-uploads')
+      .from(bucket)
       .getPublicUrl(filePath);
 
     res.json({
