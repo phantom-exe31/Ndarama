@@ -182,6 +182,96 @@ app.post('/api/chat', async (req, res) => {
 });
 
 // ============================================================
+// CONTACT FORM — saves to Supabase, then forwards to WhatsApp
+// via the official WhatsApp Cloud API (Meta).
+// ============================================================
+const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
+const WHATSAPP_PHONE_NUMBER_ID = process.env.WHATSAPP_PHONE_NUMBER_ID;
+const WHATSAPP_RECIPIENT_NUMBER = process.env.WHATSAPP_RECIPIENT_NUMBER; // e.g. 263771234567 (no +)
+const WHATSAPP_TEMPLATE_NAME = process.env.WHATSAPP_TEMPLATE_NAME || 'contact_form_notification';
+const WHATSAPP_TEMPLATE_LANG = process.env.WHATSAPP_TEMPLATE_LANG || 'en_US';
+
+async function sendWhatsAppNotification({ name, subject, email, message }) {
+  if (!WHATSAPP_TOKEN || !WHATSAPP_PHONE_NUMBER_ID || !WHATSAPP_RECIPIENT_NUMBER) {
+    console.warn('WhatsApp not configured — skipping forward (message is still saved in Supabase).');
+    return false;
+  }
+
+  const response = await fetch(`https://graph.facebook.com/v20.0/${WHATSAPP_PHONE_NUMBER_ID}/messages`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${WHATSAPP_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      to: WHATSAPP_RECIPIENT_NUMBER,
+      type: 'template',
+      template: {
+        name: WHATSAPP_TEMPLATE_NAME,
+        language: { code: WHATSAPP_TEMPLATE_LANG },
+        components: [{
+          type: 'body',
+          parameters: [
+            { type: 'text', text: name },
+            { type: 'text', text: subject || 'General Inquiry' },
+            { type: 'text', text: email },
+            { type: 'text', text: message.slice(0, 700) }
+          ]
+        }]
+      }
+    })
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    console.error('WhatsApp send error:', data);
+    return false;
+  }
+  return true;
+}
+
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, phone, subject, message } = req.body;
+
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: 'Name, email, and message are required.' });
+    }
+
+    const admin = getWriteClient();
+    const id = uuidv4();
+
+    const { error: dbError } = await admin.from('contact_messages').insert({
+      id,
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone ? phone.trim() : null,
+      subject: subject || 'General Inquiry',
+      message: message.trim()
+    });
+
+    if (dbError) throw dbError;
+
+    let whatsappSent = false;
+    try {
+      whatsappSent = await sendWhatsAppNotification({ name, subject, email, message });
+    } catch (waErr) {
+      console.error('WhatsApp forward failed (message is still saved):', waErr);
+    }
+
+    if (whatsappSent) {
+      await admin.from('contact_messages').update({ whatsapp_sent: true }).eq('id', id);
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('POST /api/contact error:', err);
+    res.status(500).json({ error: 'Something went wrong submitting your message. Please try again.' });
+  }
+});
+
+// ============================================================
 // JWT SECRET
 // ============================================================
 const JWT_SECRET = process.env.JWT_SECRET || 'ndarama-secret-key';
@@ -713,12 +803,10 @@ app.post('/api/upload', verifyToken, upload.single('file'), async (req, res) => 
     if (file.mimetype.startsWith('video/')) folder = 'videos';
     else if (!file.mimetype.startsWith('image/')) folder = 'files';
 
-    // Videos go to their own bucket; everything else keeps using blog-uploads
-    const bucket = folder === 'videos' ? 'video-uploads' : 'blog-uploads';
     const filePath = `${folder}/${filename}`;
 
     const { data, error } = await admin.storage
-      .from(bucket)
+      .from('blog-uploads')
       .upload(filePath, file.buffer, {
         contentType: file.mimetype,
         cacheControl: '3600'
@@ -727,7 +815,7 @@ app.post('/api/upload', verifyToken, upload.single('file'), async (req, res) => 
     if (error) throw error;
 
     const { data: { publicUrl } } = admin.storage
-      .from(bucket)
+      .from('blog-uploads')
       .getPublicUrl(filePath);
 
     res.json({

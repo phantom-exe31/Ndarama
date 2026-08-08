@@ -1045,7 +1045,7 @@
               <textarea id="cf-message" name="message" placeholder="Tell us how we can help..." required></textarea>
             </div>
             <button type="submit" class="btn-cta">Send Message →</button>
-            <p class="form-note" id="formNote">This form is a front-end demo — connect it to your email or CMS backend to receive submissions.</p>
+            <p class="form-note" id="formNote"></p>
           </form>
         </div>
 
@@ -1164,6 +1164,8 @@
 
           const name = document.getElementById('cf-name').value.trim();
           const email = document.getElementById('cf-email').value.trim();
+          const phone = document.getElementById('cf-phone').value.trim();
+          const subject = document.getElementById('cf-subject').value;
           const message = document.getElementById('cf-message').value.trim();
 
           if (!name || !email || !message) {
@@ -1183,19 +1185,44 @@
             return;
           }
 
-          note.textContent = '✅ Thank you! Your message has been sent. We\'ll get back to you shortly.';
-          note.className = 'form-note success';
-          note.style.color = '';
-          note.style.fontWeight = '';
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const originalBtnText = submitBtn.textContent;
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Sending…';
 
-          form.reset();
+          fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, phone, subject, message })
+          })
+            .then(r => r.json().then(data => ({ ok: r.ok, data })))
+            .then(({ ok, data }) => {
+              if (!ok) throw new Error(data.error || 'Failed to send');
 
-          setTimeout(function() {
-            note.textContent = 'This form is a front-end demo — connect it to your email or CMS backend to receive submissions.';
-            note.className = 'form-note';
-            note.style.color = '';
-            note.style.fontWeight = '';
-          }, 8000);
+              note.textContent = '✅ Thank you! Your message has been sent. We\'ll get back to you shortly.';
+              note.className = 'form-note success';
+              note.style.color = '';
+              note.style.fontWeight = '';
+
+              form.reset();
+            })
+            .catch(() => {
+              note.textContent = '⚠️ Something went wrong sending your message. Please try again, or contact us directly.';
+              note.className = 'form-note';
+              note.style.color = 'var(--cherry)';
+              note.style.fontWeight = '600';
+            })
+            .finally(() => {
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalBtnText;
+
+              setTimeout(function() {
+                note.textContent = '';
+                note.className = 'form-note';
+                note.style.color = '';
+                note.style.fontWeight = '';
+              }, 8000);
+            });
         });
       }
 
