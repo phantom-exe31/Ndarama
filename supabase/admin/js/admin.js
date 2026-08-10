@@ -1,12 +1,19 @@
 // ============================================================
-// ADMIN PANEL – Supabase version
+// ADMIN PANEL – Supabase version with enhanced features
 // ============================================================
 
 let token = null;
 let currentArticles = [];
 let editingId = null;
 let deletingId = null;
-let mediaList = [];
+let mediaList = []; // media for current article being edited
+let allMedia = [];  // global media library items
+let loginAttempts = 0;
+const MAX_LOGIN_ATTEMPTS = 5;
+const SESSION_TIMEOUT = 15 * 60 * 1000; // 15 minutes
+let sessionTimer = null;
+let lastActivity = Date.now();
+let sessionInterval = null;
 
 const API_URL = '/api';
 
@@ -20,11 +27,14 @@ const loginUsername = document.getElementById('loginUsername');
 const loginPassword = document.getElementById('loginPassword');
 const loginError = document.getElementById('loginError');
 const logoutBtn = document.getElementById('logoutBtn');
+const sessionTimerEl = document.getElementById('sessionTimer');
+const sessionCountdown = document.getElementById('sessionCountdown');
 
 const articleList = document.getElementById('articleList');
 const searchInput = document.getElementById('searchInput');
 const categoryFilter = document.getElementById('categoryFilter');
 const statusFilter = document.getElementById('statusFilter');
+const sortBy = document.getElementById('sortBy');
 const newArticleBtn = document.getElementById('newArticleBtn');
 
 const modal = document.getElementById('articleModal');
@@ -48,6 +58,82 @@ const addVideoFileBtn = document.getElementById('addVideoFileBtn');
 const addVideoBtn = document.getElementById('addVideoBtn');
 const addFileBtn = document.getElementById('addFileBtn');
 
+const mediaLibModal = document.getElementById('mediaLibraryModal');
+const mediaLibraryGrid = document.getElementById('mediaLibraryGrid');
+const libFileInput = document.getElementById('libFileInput');
+const libUploadBtn = document.getElementById('libUploadBtn');
+const mediaLibClose = document.getElementById('mediaLibClose');
+const mediaLibCancel = document.getElementById('mediaLibCancel');
+const mediaLibSelect = document.getElementById('mediaLibSelect');
+const openMediaLibraryBtn = document.getElementById('openMediaLibraryBtn');
+const openMediaLibBtn = document.getElementById('openMediaLibBtn');
+
+const exportPdfBtn = document.getElementById('exportPdfBtn');
+const toastContainer = document.getElementById('toastContainer');
+
+// ============================================================
+// TOAST SYSTEM
+// ============================================================
+function showToast(message, type = 'info', duration = 4000) {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `
+    <span>${message}</span>
+    <button class="toast-close">✕</button>
+  `;
+  toast.querySelector('.toast-close').addEventListener('click', () => toast.remove());
+  toastContainer.appendChild(toast);
+  setTimeout(() => {
+    if (toast.parentNode) toast.remove();
+  }, duration);
+}
+
+// ============================================================
+// SESSION MANAGEMENT
+// ============================================================
+function resetSessionTimer() {
+  lastActivity = Date.now();
+  sessionTimerEl.style.transform = 'scaleX(1)';
+  sessionTimerEl.className = 'session-timer';
+  if (sessionInterval) clearInterval(sessionInterval);
+  startSessionCountdown();
+}
+
+function startSessionCountdown() {
+  const total = SESSION_TIMEOUT;
+  let elapsed = 0;
+  if (sessionInterval) clearInterval(sessionInterval);
+  sessionInterval = setInterval(() => {
+    elapsed += 1000;
+    const remaining = total - elapsed;
+    const pct = Math.max(0, remaining / total);
+    sessionTimerEl.style.transform = `scaleX(${pct})`;
+    if (pct < 0.2) sessionTimerEl.className = 'session-timer danger';
+    else if (pct < 0.4) sessionTimerEl.className = 'session-timer warning';
+    else sessionTimerEl.className = 'session-timer';
+    if (remaining <= 0) {
+      clearInterval(sessionInterval);
+      handleSessionTimeout();
+    }
+    // show countdown in header
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    sessionCountdown.textContent = `⏱ ${mins}m ${secs}s`;
+  }, 1000);
+}
+
+function handleSessionTimeout() {
+  showToast('Session expired. Please login again.', 'error');
+  logout();
+}
+
+// Activity listeners
+['click', 'keydown', 'scroll', 'mousemove'].forEach(evt => {
+  document.addEventListener(evt, () => {
+    if (adminPanel.style.display !== 'none') resetSessionTimer();
+  });
+});
+
 // ============================================================
 // AUTH
 // ============================================================
@@ -58,6 +144,8 @@ function checkAuth() {
     showAdminPanel();
     loadArticles();
     loadCategories();
+    loadMediaLibrary();
+    resetSessionTimer();
   }
 }
 
@@ -71,6 +159,11 @@ function login(e) {
     return;
   }
 
+  if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+    loginError.textContent = `Too many failed attempts. Account locked for ${Math.round(SESSION_TIMEOUT/60000)} minutes.`;
+    return;
+  }
+
   fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -81,11 +174,18 @@ function login(e) {
     if (data.token) {
       token = data.token;
       localStorage.setItem('adminToken', token);
+      loginAttempts = 0;
+      loginError.textContent = '';
       showAdminPanel();
       loadArticles();
       loadCategories();
+      loadMediaLibrary();
+      resetSessionTimer();
+      showToast('Welcome back, Admin!', 'success');
     } else {
+      loginAttempts++;
       loginError.textContent = data.error || 'Invalid credentials.';
+      showToast('Login failed', 'error');
     }
   })
   .catch(() => {
@@ -94,11 +194,14 @@ function login(e) {
 }
 
 function logout() {
+  if (sessionInterval) clearInterval(sessionInterval);
   token = null;
   localStorage.removeItem('adminToken');
   loginPassword.value = '';
   loginError.textContent = '';
+  loginAttempts = 0;
   showLoginScreen();
+  showToast('Logged out.', 'info');
 }
 
 function showLoginScreen() {
@@ -146,6 +249,7 @@ function loadArticles() {
     .catch(err => {
       console.error('Failed to load articles:', err);
       articleList.innerHTML = `<div class="empty-state"><p>⚠️ Failed to load articles.</p></div>`;
+      showToast('Error loading articles', 'error');
     });
 }
 
@@ -165,6 +269,22 @@ function loadCategories() {
     .catch(err => console.error('Failed to load categories:', err));
 }
 
+function loadMediaLibrary() {
+  fetch(`${API_URL}/media`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+    .then(res => res.json())
+    .then(data => {
+      allMedia = data;
+      renderMediaLibrary();
+    })
+    .catch(err => {
+      console.error('Failed to load media library:', err);
+      allMedia = [];
+      renderMediaLibrary();
+    });
+}
+
 function updateStats(articles) {
   document.getElementById('totalArticles').textContent = articles.length;
   document.getElementById('featuredCount').textContent = articles.filter(a => a.featured).length;
@@ -181,29 +301,45 @@ function renderArticles(articles) {
     return;
   }
 
-  articleList.innerHTML = articles.map(article => `
-    <div class="article-item" data-id="${article.id}">
-      <div class="thumb">
-        ${article.media && article.media.length > 0 && article.media[0].url ?
-          `<img src="${article.media[0].url}" alt="${article.media[0].alt_text || ''}" loading="lazy" />` :
-          `<div class="no-img">📄</div>`}
-      </div>
-      <div class="info">
-        <h4>${article.title}</h4>
-        <div class="meta">
-          <span class="category-tag ${article.category || 'general'}">${article.category_label || article.category || 'General'}</span>
-          <span>${formatDate(article.date)}</span>
-          ${article.featured ? '<span class="featured-badge">★ Featured</span>' : ''}
-          <span class="status-badge ${article.status || 'published'}">${article.status || 'Published'}</span>
-          ${article.media && article.media.length > 0 ? `<span class="media-indicator">📎 ${article.media.length}</span>` : ''}
+  // Apply sorting
+  const sort = sortBy.value;
+  const sorted = [...articles].sort((a, b) => {
+    switch (sort) {
+      case 'date-asc': return new Date(a.date || a.created) - new Date(b.date || b.created);
+      case 'date-desc': return new Date(b.date || b.created) - new Date(a.date || a.created);
+      case 'title-asc': return a.title.localeCompare(b.title);
+      case 'title-desc': return b.title.localeCompare(a.title);
+      case 'status': return (a.status || '').localeCompare(b.status || '');
+      default: return 0;
+    }
+  });
+
+  articleList.innerHTML = sorted.map(article => {
+    const thumb = article.media && article.media.length > 0 && article.media[0].url
+      ? `<img src="${article.media[0].url}" alt="${article.media[0].alt_text || ''}" loading="lazy" />`
+      : `<div class="no-img">📄</div>`;
+    const categoryClass = article.category || 'general';
+    const statusClass = article.status || 'published';
+    return `
+      <div class="article-item" data-id="${article.id}">
+        <div class="thumb">${thumb}</div>
+        <div class="info">
+          <h4>${article.title}</h4>
+          <div class="meta">
+            <span class="category-tag ${categoryClass}">${article.category_label || article.category || 'General'}</span>
+            <span>${formatDate(article.date)}</span>
+            ${article.featured ? '<span class="featured-badge">★ Featured</span>' : ''}
+            <span class="status-badge ${statusClass}">${article.status || 'Published'}</span>
+            ${article.media && article.media.length > 0 ? `<span class="media-indicator">📎 ${article.media.length}</span>` : ''}
+          </div>
+        </div>
+        <div class="actions">
+          <button class="edit-btn" onclick="editArticle('${article.id}')">✎ Edit</button>
+          <button class="delete-btn" onclick="confirmDelete('${article.id}')">✕</button>
         </div>
       </div>
-      <div class="actions">
-        <button class="edit-btn" onclick="editArticle('${article.id}')">✎ Edit</button>
-        <button class="delete-btn" onclick="confirmDelete('${article.id}')">✕</button>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 
 function formatDate(dateStr) {
@@ -225,8 +361,8 @@ function filterArticles() {
   if (search) {
     filtered = filtered.filter(a =>
       a.title.toLowerCase().includes(search) ||
-      a.excerpt.toLowerCase().includes(search) ||
-      a.content.toLowerCase().includes(search)
+      (a.excerpt && a.excerpt.toLowerCase().includes(search)) ||
+      (a.content && a.content.toLowerCase().includes(search))
     );
   }
   renderArticles(filtered);
@@ -234,9 +370,10 @@ function filterArticles() {
 searchInput.addEventListener('input', filterArticles);
 categoryFilter.addEventListener('change', filterArticles);
 statusFilter.addEventListener('change', filterArticles);
+sortBy.addEventListener('change', filterArticles);
 
 // ============================================================
-// MEDIA MANAGEMENT
+// MEDIA MANAGEMENT (per article)
 // ============================================================
 function addMediaItem(mediaData) {
   mediaList.push(mediaData);
@@ -251,9 +388,11 @@ function removeMediaItem(index) {
 function updateMediaCaption(index, caption) {
   mediaList[index].caption = caption;
 }
+
 function updateMediaAlt(index, alt) {
   mediaList[index].alt_text = alt;
 }
+
 function toggleFeaturedMedia(index) {
   mediaList.forEach((m, i) => m.is_featured = (i === index) ? !m.is_featured : false);
   renderMediaList();
@@ -276,7 +415,6 @@ function renderMediaList() {
       preview = `<img src="${item.url}" alt="${item.alt_text || ''}" loading="lazy" />`;
     } else if (isVideo && item.url) {
       if (item.url.includes('youtube.com') || item.url.includes('youtu.be')) {
-        const embedUrl = getYouTubeEmbedUrl(item.url);
         preview = `<img src="https://img.youtube.com/vi/${getYouTubeId(item.url)}/mqdefault.jpg" alt="Video thumbnail" />`;
       } else if (item.url.includes('vimeo.com')) {
         preview = `<div class="media-icon">🎬</div>`;
@@ -315,15 +453,11 @@ function getYouTubeId(url) {
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?]+)/);
   return match ? match[1] : '';
 }
-function getYouTubeEmbedUrl(url) {
-  const id = getYouTubeId(url);
-  return id ? `https://www.youtube.com/embed/${id}` : url;
-}
 
 // ============================================================
 // FILE UPLOAD (to Supabase storage via server)
 // ============================================================
-function uploadFiles(files) {
+function uploadFiles(files, target = 'article') {
   const uploadNext = (index) => {
     if (index >= files.length) return;
     const file = files[index];
@@ -338,23 +472,30 @@ function uploadFiles(files) {
     .then(res => res.json())
     .then(data => {
       if (data.url) {
-        addMediaItem({
-          type: data.type || 'file',
-          url: data.url,
-          filename: data.filename,
-          original_name: data.originalName,
-          mime_type: data.mimeType,
-          size: data.size,
-          alt_text: file.name.split('.')[0],
-          caption: '',
-          is_featured: mediaList.length === 0
-        });
+        if (target === 'article') {
+          addMediaItem({
+            type: data.type || 'file',
+            url: data.url,
+            filename: data.filename,
+            original_name: data.originalName,
+            mime_type: data.mimeType,
+            size: data.size,
+            alt_text: file.name.split('.')[0],
+            caption: '',
+            is_featured: mediaList.length === 0
+          });
+          showToast(`Uploaded: ${file.name}`, 'success');
+        } else if (target === 'library') {
+          // Add to library and reload
+          loadMediaLibrary();
+          showToast(`Uploaded to library: ${file.name}`, 'success');
+        }
       }
       uploadNext(index + 1);
     })
     .catch(err => {
       console.error('Upload error:', err);
-      alert('Failed to upload: ' + file.name);
+      showToast(`Failed to upload: ${file.name}`, 'error');
       uploadNext(index + 1);
     });
   };
@@ -381,6 +522,122 @@ function addVideoLink() {
     caption: '',
     is_featured: mediaList.length === 0
   });
+  showToast('Video link added.', 'success');
+}
+
+// ============================================================
+// MEDIA LIBRARY MODAL
+// ============================================================
+function renderMediaLibrary() {
+  const grid = mediaLibraryGrid;
+  if (!allMedia || allMedia.length === 0) {
+    grid.innerHTML = `<div class="media-library-empty">No media files yet. Upload some!</div>`;
+    return;
+  }
+  grid.innerHTML = allMedia.map(m => `
+    <div class="media-library-item" data-id="${m.id}">
+      ${m.type === 'image' ? `<img src="${m.url}" alt="${m.original_name || ''}" />` : `<div style="height:90px;display:flex;align-items:center;justify-content:center;background:#f0f0f0;font-size:2rem;">📄</div>`}
+      <div class="lib-name">${m.original_name || m.filename || 'file'}</div>
+      <div class="lib-actions">
+        <button class="select-lib" data-id="${m.id}">Select</button>
+        <button class="del-lib" data-id="${m.id}">✕</button>
+      </div>
+    </div>
+  `).join('');
+
+  // Select from library → add to article
+  grid.querySelectorAll('.select-lib').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const id = this.dataset.id;
+      const media = allMedia.find(m => m.id === id);
+      if (!media) return;
+      // Clone media object with necessary fields
+      addMediaItem({
+        type: media.type || 'file',
+        url: media.url,
+        filename: media.filename,
+        original_name: media.original_name,
+        mime_type: media.mime_type,
+        size: media.size,
+        alt_text: media.alt_text || '',
+        caption: media.caption || '',
+        is_featured: mediaList.length === 0
+      });
+      showToast(`Added: ${media.original_name || media.filename}`, 'success');
+    });
+  });
+
+  // Delete from library
+  grid.querySelectorAll('.del-lib').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const id = this.dataset.id;
+      if (!confirm('Delete this media permanently?')) return;
+      apiFetch(`${API_URL}/media/${id}`, { method: 'DELETE' })
+        .then(() => {
+          loadMediaLibrary();
+          showToast('Media deleted.', 'error');
+        })
+        .catch(err => {
+          showToast('Error deleting media: ' + err.message, 'error');
+        });
+    });
+  });
+}
+
+function openMediaLibrary() {
+  renderMediaLibrary();
+  mediaLibModal.style.display = 'flex';
+}
+
+function closeMediaLibrary() {
+  mediaLibModal.style.display = 'none';
+}
+
+// Library upload
+libUploadBtn.addEventListener('click', function() {
+  const files = libFileInput.files;
+  if (!files.length) {
+    showToast('Select files first.', 'warning');
+    return;
+  }
+  uploadFiles(Array.from(files), 'library');
+  libFileInput.value = '';
+});
+
+// ============================================================
+// PDF EXPORT
+// ============================================================
+function exportPDF() {
+  const content = articleList.innerText || 'No articles';
+  const win = window.open('', '_blank');
+  if (!win) {
+    showToast('Please allow popups for PDF export.', 'warning');
+    return;
+  }
+  win.document.write(`
+    <html><head><title>Ndarama Articles</title>
+    <style>body{font-family:Inter,sans-serif;padding:40px;max-width:900px;margin:auto;}
+    h1{color:#5C2E16;} table{width:100%;border-collapse:collapse;margin-top:20px;}
+    th,td{padding:10px;border-bottom:1px solid #eee;text-align:left;}
+    th{background:#5C2E16;color:#fff;}</style>
+    </head><body>
+    <h1>📄 Ndarama Blog — Article List</h1>
+    <p>Exported: ${new Date().toLocaleString()}</p>
+    <table>
+      <tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th></tr>
+      ${currentArticles.map(a => `
+        <tr><td>${a.title}</td><td>${a.category}</td><td>${a.status}</td><td>${a.date || '—'}</td></tr>
+      `).join('')}
+    </table>
+    <p style="margin-top:30px;color:#888;">Total: ${currentArticles.length} articles</p>
+    <script>
+      window.onload = function() { window.print(); } <\/script>
+    </body></html>
+  `);
+  win.document.close();
+  showToast('PDF export started.', 'success');
 }
 
 // ============================================================
@@ -410,6 +667,7 @@ function openModal() {
   modal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
+
 function closeModal() {
   modal.style.display = 'none';
   document.body.style.overflow = '';
@@ -497,6 +755,7 @@ function saveArticle(e) {
       closeModal();
       loadArticles();
       loadCategories();
+      showToast(isEdit ? 'Article updated!' : 'Article created!', 'success');
     })
     .catch(err => {
       alert('Error saving article: ' + err.message);
@@ -514,11 +773,13 @@ function confirmDelete(id) {
   deleteModal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
+
 function closeDeleteModal() {
   deleteModal.style.display = 'none';
   document.body.style.overflow = '';
   deletingId = null;
 }
+
 function deleteArticle() {
   if (!deletingId) return;
   apiFetch(`${API_URL}/articles/${deletingId}`, { method: 'DELETE' })
@@ -526,6 +787,7 @@ function deleteArticle() {
       closeDeleteModal();
       loadArticles();
       loadCategories();
+      showToast('Article deleted.', 'error');
     })
     .catch(err => {
       alert('Error deleting article: ' + err.message);
@@ -576,15 +838,32 @@ fileInput.addEventListener('change', function() {
     alert('No valid files selected.');
     return;
   }
-  uploadFiles(validFiles);
+  uploadFiles(validFiles, 'article');
   this.value = '';
 });
 
+// Media Library buttons
+openMediaLibraryBtn.addEventListener('click', openMediaLibrary);
+openMediaLibBtn.addEventListener('click', openMediaLibrary);
+mediaLibClose.addEventListener('click', closeMediaLibrary);
+mediaLibCancel.addEventListener('click', closeMediaLibrary);
+mediaLibModal.addEventListener('click', (e) => { if (e.target === mediaLibModal) closeMediaLibrary(); });
+mediaLibSelect.addEventListener('click', closeMediaLibrary);
+
+// PDF Export
+exportPdfBtn.addEventListener('click', exportPDF);
+
+// Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { closeModal(); closeDeleteModal(); }
+  if (e.key === 'Escape') { closeModal(); closeDeleteModal(); closeMediaLibrary(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 's' && modal.style.display !== 'none') {
     e.preventDefault();
     articleForm.dispatchEvent(new Event('submit'));
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'n' && adminPanel.style.display !== 'none') {
+    e.preventDefault();
+    resetForm();
+    openModal();
   }
 });
 
