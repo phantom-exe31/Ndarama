@@ -9,3 +9,1227 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,900;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       ROOT VARIABLES & RESET — (same as index + about)
+       ============================================================ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --gold: #D4AF37;
+      --gold-light: #f3e08e;
+      --cherry: #8B0000;
+      --mahogany: #5C2E16;
+      --dark: #0f0e0c;
+      --dark-soft: #1e1b17;
+      --light: #f9f7f2;
+      --gray: #6b6a67;
+      --white: #ffffff;
+      --font-serif: 'Playfair Display', serif;
+      --font-sans: 'Inter', sans-serif;
+      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 12px 40px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.12);
+      --shadow-glow: 0 8px 32px rgba(212, 175, 55, 0.25);
+      --radius-card: 16px;
+      --radius-pill: 50px;
+      --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    ul,
+    ol {
+      list-style: none;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============================================================
+       SKIP LINK
+       ============================================================ */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--dark);
+      padding: 12px 24px;
+      border-radius: 0 0 8px 8px;
+      font-weight: 700;
+      z-index: 1000;
+      transition: top 0.3s;
+    }
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ============================================================
+       NAVIGATION (identical to index + about)
+       ============================================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(15, 14, 12, 0.85);
+      backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 10px 0;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--white);
+    }
+    .brand-mark-badge img {
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+    }
+    .brand-name {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+    .brand-name span {
+      display: block;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.9;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--white);
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+    .btn-cta {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 10px 28px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all var(--transition);
+      box-shadow: var(--shadow-glow);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-cta:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(212, 175, 55, 0.35);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      padding: 10px 28px;
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 28px;
+      height: 2.5px;
+      background: var(--white);
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+    @media (max-width: 900px) {
+      .hamburger {
+        display: flex;
+      }
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 14, 12, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 24px;
+        gap: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: clip-path 0.4s ease;
+        pointer-events: none;
+      }
+      .nav-links.open {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        pointer-events: all;
+      }
+      .nav-links a {
+        font-size: 1.1rem;
+        padding: 8px 0;
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .nav-links .btn-cta {
+        width: 100%;
+        justify-content: center;
+        margin-top: 8px;
+      }
+    }
+
+    /* ============================================================
+       HERO — MINIMALIST (matches about + student-life + news)
+       ============================================================ */
+    .hero-contact {
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      background: var(--dark);
+      overflow: hidden;
+    }
+
+    .hero-contact .bg-texture {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.15;
+      z-index: 0;
+      filter: grayscale(0.6) brightness(0.6);
+    }
+
+    .hero-contact::after {
+      content: '';
+      position: absolute;
+      right: -10%;
+      top: -20%;
+      width: 50%;
+      height: 140%;
+      background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.06), transparent 70%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-contact .container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-text {
+      padding: 2rem 0;
+    }
+
+    .hero-text .label {
+      display: inline-block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 4px 16px;
+      border-radius: 50px;
+    }
+
+    .hero-text h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--white);
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .hero-text h1 .gold {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .hero-text .accent-line {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      margin: 16px 0 20px 0;
+      border-radius: 4px;
+    }
+
+    .hero-text .sub {
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 460px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .hero-text .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .hero-text .btn-ghost {
+      background: transparent;
+      color: var(--white);
+      padding: 10px 28px;
+      border-radius: var(--radius-pill);
+      font-weight: 500;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero-text .btn-ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    /* --- Right column: visual (gold geometry) --- */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      min-height: 300px;
+    }
+
+    .hero-visual .geo-ring {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      border: 1px solid rgba(212, 175, 55, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: geoFloat 8s ease-in-out infinite alternate;
+    }
+
+    .hero-visual .geo-ring::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 1px solid rgba(212, 175, 55, 0.08);
+      animation: geoFloat 6s ease-in-out infinite alternate-reverse;
+    }
+
+    .hero-visual .geo-core {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.3), rgba(212, 175, 55, 0.05));
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      box-shadow: 0 0 60px rgba(212, 175, 55, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      color: rgba(212, 175, 55, 0.15);
+      font-weight: 300;
+    }
+
+    .hero-visual .geo-line {
+      position: absolute;
+      width: 140px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.4), transparent);
+      transform: rotate(45deg) translateX(60px);
+      top: 50%;
+      right: -20%;
+    }
+
+    .hero-visual .geo-line-2 {
+      position: absolute;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.2), transparent);
+      transform: rotate(-30deg) translateX(-20px);
+      bottom: 20%;
+      left: 10%;
+    }
+
+    @keyframes geoFloat {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+      100% {
+        transform: translateY(-16px) rotate(4deg);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        text-align: center;
+      }
+      .hero-text .accent-line {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-text .sub {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-text .actions {
+        justify-content: center;
+      }
+      .hero-visual {
+        min-height: 200px;
+      }
+      .hero-visual .geo-ring {
+        width: 200px;
+        height: 200px;
+      }
+      .hero-visual .geo-ring::before {
+        width: 150px;
+        height: 150px;
+      }
+      .hero-visual .geo-core {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+      }
+      .hero-visual .geo-line,
+      .hero-visual .geo-line-2 {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-contact {
+        min-height: 60vh;
+        padding: 4rem 0;
+      }
+      .hero-visual {
+        display: none;
+      }
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-text h1 {
+        font-size: clamp(2rem, 10vw, 2.8rem);
+      }
+      .hero-text .label {
+        font-size: 0.6rem;
+        padding: 3px 12px;
+      }
+    }
+
+    /* ============================================================
+       SECTIONS — Shared
+       ============================================================ */
+    section {
+      padding: clamp(4rem, 10vh, 8rem) 0;
+    }
+    .section-head {
+      margin-bottom: 48px;
+    }
+    .section-head h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+    }
+    .section-head p {
+      font-size: 1.1rem;
+      color: var(--gray);
+      margin-top: 8px;
+      max-width: 600px;
+    }
+    .section-head.centered {
+      text-align: center;
+    }
+    .section-head.centered p {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .link-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--gold);
+      border-bottom: 1.5px solid transparent;
+      transition: all var(--transition);
+      padding-bottom: 2px;
+    }
+    .link-arrow:hover {
+      border-bottom-color: var(--gold);
+      gap: 14px;
+    }
+
+    /* ============================================================
+       CONTACT SECTION
+       ============================================================ */
+    .contact-section {
+      background: var(--white);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* ---------- Contact Info ---------- */
+    .contact-info h3 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      color: var(--mahogany);
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-info .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem 0;
+    }
+    .contact-info .info-list li {
+      display: flex;
+      flex-direction: column;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--dark-soft);
+    }
+    .contact-info .info-list li:last-child {
+      border-bottom: none;
+    }
+    .contact-info .info-list li strong {
+      font-weight: 600;
+      color: var(--mahogany);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.2rem;
+      opacity: 0.7;
+    }
+
+    .contact-info .map-embed {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: var(--cherry);
+      border-radius: var(--radius-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 1.5rem;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition);
+    }
+    .contact-info .map-embed:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .contact-info .map-embed .placeholder-tag {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 0.6rem 1.5rem;
+      border-radius: 30px;
+      backdrop-filter: blur(2px);
+      z-index: 2;
+    }
+    .contact-info .map-embed iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ---------- Form ---------- */
+    .contact-form-wrap {
+      background: var(--white);
+      padding: 2.5rem;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition);
+    }
+    .contact-form-wrap:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .contact-form-wrap h3 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--mahogany);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-field {
+      margin-bottom: 1.5rem;
+    }
+    .form-field:last-of-type {
+      margin-bottom: 2rem;
+    }
+
+    .form-field label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--mahogany);
+      margin-bottom: 0.3rem;
+      font-family: var(--font-sans);
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--dark-soft);
+      background: var(--white);
+      border: 2px solid rgba(0, 0, 0, 0.08);
+      border-radius: var(--radius-card);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.08);
+    }
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: rgba(0, 0, 0, 0.3);
+    }
+    .form-field textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+    .form-field select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235C2E16' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    .contact-form-wrap .btn-cta {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-note {
+      font-size: 0.8rem;
+      color: var(--gray);
+      text-align: center;
+      margin-top: 1rem;
+      font-style: italic;
+      line-height: 1.5;
+      opacity: 0.7;
+      transition: all var(--transition);
+    }
+    .form-note.success {
+      color: var(--gold);
+      font-weight: 600;
+      opacity: 1;
+      font-style: normal;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 992px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .contact-section {
+        padding: 3rem 0;
+      }
+      .contact-form-wrap {
+        padding: 1.5rem;
+      }
+      .contact-info .info-list li {
+        padding: 0.6rem 0;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* ============================================================
+       CTA (identical to index + about)
+       ============================================================ */
+    .cta {
+      background: linear-gradient(135deg, var(--dark), var(--mahogany));
+      color: var(--white);
+      text-align: center;
+      border-radius: var(--radius-card) var(--radius-card) 0 0;
+    }
+    .cta .serif {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .cta p {
+      max-width: 600px;
+      margin: 0 auto 32px;
+      opacity: 0.85;
+      font-size: 1.1rem;
+    }
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+    .cta .btn-outline {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .cta .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* ============================================================
+       FOOTER (identical to index + about)
+       ============================================================ */
+    footer {
+      background: var(--dark-soft);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 48px 0 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr;
+      gap: 48px;
+      margin-bottom: 40px;
+    }
+    .footer-brand h4 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      color: var(--white);
+      margin-top: 8px;
+    }
+    .footer-brand p {
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+    .footer-grid h5 {
+      color: var(--white);
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 1rem;
+    }
+    .footer-grid ul li {
+      margin-bottom: 10px;
+    }
+    .footer-grid ul li a {
+      transition: color var(--transition);
+    }
+    .footer-grid ul li a:hover {
+      color: var(--gold);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.9rem;
+    }
+    .socials {
+      display: flex;
+      gap: 16px;
+    }
+    .socials a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      transition: all var(--transition);
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .socials a:hover {
+      background: var(--gold);
+      color: var(--dark);
+      transform: translateY(-3px);
+    }
+    .socials a svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    /* ============================================================
+       SCROLL REVEAL (identical)
+       ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+  <link rel="stylesheet" href="assets/css/chatbot.css" />
+</head>
+
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ============================================================
+  NAV
+  ============================================================ -->
+  <header class="nav" id="siteNav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
+        <span class="brand-name">Ndarama High<span>Spring of Knowledge and Power</span></span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="student-life.html">Student Life</a>
+        <a href="news.html">News</a>
+        <a href="contact.html" class="active">Contact</a>
+        <a href="contact.html" class="btn-cta">Book a Tour</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================================
+    HERO — MINIMALIST (matches about + student-life + news)
+    ============================================================ -->
+    <section class="hero-contact" id="hero-contact">
+      <img
+        src="https://ndaramahigh.co.zw/images/reception-block.webp"
+        alt="Ndarama High School campus"
+        fetchpriority="high"
+        decoding="async"
+        class="bg-texture"
+      />
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-text">
+            <span class="label">Contact</span>
+            <h1>Let's <span class="gold">connect</span>.</h1>
+            <div class="accent-line"></div>
+            <p class="sub">Have questions about admissions, school tours, or anything else? We're here to help. Reach out and we'll get back to you promptly.</p>
+            <div class="actions">
+              <a href="#contact-form" class="btn-cta">Send a Message</a>
+              <a href="tel:+263392252984" class="btn-ghost">Call Us</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="geo-ring">
+              <div class="geo-core">✦</div>
+              <span class="geo-line"></span>
+              <span class="geo-line-2"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+    CONTACT SECTION
+    ============================================================ -->
+    <section class="contact-section" id="contact">
+      <div class="container contact-grid">
+
+        <!-- Contact Info -->
+        <div class="contact-info reveal">
+          <h3>Visit Us</h3>
+          <ul class="info-list">
+            <li>
+              <strong>Address</strong>
+              Ndarama High School, P.O. Box 9010, Masvingo, Zimbabwe
+            </li>
+            <li>
+              <strong>Phone</strong>
+              +263 39 225 2984
+            </li>
+            <li>
+              <strong>Cell</strong>
+              0112 181 174
+            </li>
+            <li>
+              <strong>Fax</strong>
+              (039) 253089
+            </li>
+            <li>
+              <strong>Email</strong>
+              info@ndarama.ac.zw
+            </li>
+            <li>
+              <strong>Office Hours</strong>
+              Mon–Fri: 7:30 AM – 4:00 PM · Sat: 8:00 AM – 12:00 PM
+            </li>
+          </ul>
+
+          <div class="map-embed">
+            <span class="placeholder-tag">Map embed — Masvingo, opposite Masvingo Technical College<br />(insert Google Maps iframe here)</span>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-wrap reveal" id="contact-form">
+          <h3>Send a Message</h3>
+          <form id="contactForm" novalidate>
+            <div class="form-field">
+              <label for="cf-name">Name *</label>
+              <input type="text" id="cf-name" name="name" placeholder="Your full name" required />
+            </div>
+            <div class="form-field">
+              <label for="cf-email">Email *</label>
+              <input type="email" id="cf-email" name="email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-field">
+              <label for="cf-phone">Phone</label>
+              <input type="tel" id="cf-phone" name="phone" placeholder="+263 77 123 4567" />
+            </div>
+            <div class="form-field">
+              <label for="cf-subject">Subject</label>
+              <select id="cf-subject" name="subject">
+                <option>General Inquiry</option>
+                <option>Admissions &amp; Tours</option>
+                <option>Academics</option>
+                <option>Album / Student Life</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="cf-message">Message *</label>
+              <textarea id="cf-message" name="message" placeholder="Tell us how we can help..." required></textarea>
+            </div>
+            <button type="submit" class="btn-cta">Send Message →</button>
+            <p class="form-note" id="formNote"></p>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+    CTA
+    ============================================================ -->
+    <section class="cta">
+      <div class="container reveal">
+        <h2 class="serif">Visit Ndarama.</h2>
+        <p>Book a school tour and experience the Spring of Knowledge and Power for yourself.</p>
+        <div class="cta-actions">
+          <a href="contact.html" class="btn-cta">Book a Tour</a>
+          <a href="tel:+263392252984" class="btn-outline">Call Now</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+  FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="brand-mark-badge"><img src="assets/img/logo.jpg" alt="Ndarama High School crest" width="44" height="44" /></span>
+          <h4>Ndarama High School</h4>
+          <p>Spring of Knowledge and Power</p>
+        </div>
+        <div>
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="student-life.html">Student Life</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Contact</h5>
+          <ul>
+            <li>P.O. Box 9010, Masvingo, Zimbabwe</li>
+            <li>+263 39 225 2984</li>
+            <li>info@ndarama.ac.zw</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Ndarama High School. All rights reserved.</span>
+        <div class="socials" aria-label="Social media">
+          <a href="https://www.facebook.com/ndaramahigh/" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/channel/UCeKMbUFLVq6VIdFaERolQYg" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/golden_voices_band/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+  JAVASCRIPT
+  ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // --- Hamburger ---
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.getElementById('navLinks');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function() {
+          const expanded = this.getAttribute('aria-expanded') === 'true' ? false : true;
+          this.setAttribute('aria-expanded', expanded);
+          this.classList.toggle('active');
+          navLinks.classList.toggle('open');
+        });
+      }
+
+      // --- Scroll Reveal ---
+      const reveals = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(function(el) { observer.observe(el); });
+      } else {
+        reveals.forEach(function(el) { el.classList.add('visible'); });
+      }
+
+      // --- Open social links in a new tab ---
+      document.querySelectorAll('.socials a').forEach(function(link) {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      });
+
+      // --- Contact form ---
+      const form = document.getElementById('contactForm');
+      const note = document.getElementById('formNote');
+
+      if (form && note) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          const name = document.getElementById('cf-name').value.trim();
+          const email = document.getElementById('cf-email').value.trim();
+          const phone = document.getElementById('cf-phone').value.trim();
+          const subject = document.getElementById('cf-subject').value;
+          const message = document.getElementById('cf-message').value.trim();
+
+          if (!name || !email || !message) {
+            note.textContent = '⚠️ Please fill in all required fields.';
+            note.className = 'form-note';
+            note.style.color = 'var(--cherry)';
+            note.style.fontWeight = '600';
+            return;
+          }
+
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(email)) {
+            note.textContent = '⚠️ Please enter a valid email address.';
+            note.className = 'form-note';
+            note.style.color = 'var(--cherry)';
+            note.style.fontWeight = '600';
+            return;
+          }
+
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const originalBtnText = submitBtn.textContent;
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Sending…';
+
+          fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, phone, subject, message })
+          })
+            .then(r => r.json().then(data => ({ ok: r.ok, data })))
+            .then(({ ok, data }) => {
+              if (!ok) throw new Error(data.error || 'Failed to send');
+
+              note.textContent = '✅ Thank you! Your message has been sent. We\'ll get back to you shortly.';
+              note.className = 'form-note success';
+              note.style.color = '';
+              note.style.fontWeight = '';
+
+              form.reset();
+            })
+            .catch(() => {
+              note.textContent = '⚠️ Something went wrong sending your message. Please try again, or contact us directly.';
+              note.className = 'form-note';
+              note.style.color = 'var(--cherry)';
+              note.style.fontWeight = '600';
+            })
+            .finally(() => {
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalBtnText;
+
+              setTimeout(function() {
+                note.textContent = '';
+                note.className = 'form-note';
+                note.style.color = '';
+                note.style.fontWeight = '';
+              }, 8000);
+            });
+        });
+      }
+
+    })();
+  </script>
+
+  <script src="assets/js/chatbot.js"></script>
+
+</body>
+  </html>
