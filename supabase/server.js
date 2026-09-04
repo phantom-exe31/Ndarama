@@ -224,12 +224,45 @@ async function sendWhatsAppNotification({ name, subject, email, message }) {
   });
 
   const data = await response.json();
+
   if (!response.ok) {
     console.error('WhatsApp send error:', data);
     return false;
   }
   return true;
 }
+
+// ============================================================
+// TEMPORARY — one-time WhatsApp phone number registration.
+// Visit this URL once in a browser, then DELETE this whole route
+// (see chat for instructions). Protected by ADMIN_PASSWORD so it's
+// not wide open, but it should not stay in the code long-term.
+// ============================================================
+app.get('/api/register-whatsapp', async (req, res) => {
+  try {
+    if (req.query.secret !== process.env.ADMIN_PASSWORD) {
+      return res.status(403).json({ error: 'Forbidden — wrong secret.' });
+    }
+    const pin = req.query.pin;
+    if (!pin || pin.length !== 6) {
+      return res.status(400).json({ error: 'Add &pin=123456 (any 6 digits you choose) to the URL.' });
+    }
+
+    const response = await fetch(`https://graph.facebook.com/v20.0/${WHATSAPP_PHONE_NUMBER_ID}/register`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${WHATSAPP_TOKEN}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ messaging_product: 'whatsapp', pin })
+    });
+
+    const data = await response.json();
+    res.status(response.status).json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.post('/api/contact', async (req, res) => {
   try {
