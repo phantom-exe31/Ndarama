@@ -191,6 +191,20 @@ const WHATSAPP_RECIPIENT_NUMBER = process.env.WHATSAPP_RECIPIENT_NUMBER; // e.g.
 const WHATSAPP_TEMPLATE_NAME = process.env.WHATSAPP_TEMPLATE_NAME || 'contact_form_notification';
 const WHATSAPP_TEMPLATE_LANG = process.env.WHATSAPP_TEMPLATE_LANG || 'en_US';
 
+// ------------------------------------------------------------
+// FIX for "(#100) Invalid parameter" on template sends:
+// WhatsApp template parameters cannot contain newlines or
+// runs of multiple spaces/tabs. Contact-form textareas commonly
+// include line breaks, which silently breaks the whole request.
+// This strips/collapses that whitespace before it's sent.
+// ------------------------------------------------------------
+function sanitizeForTemplate(text) {
+  return String(text || '')
+    .replace(/[\r\n]+/g, ' ')   // strip newlines
+    .replace(/\s{2,}/g, ' ')    // collapse repeated spaces/tabs
+    .trim();
+}
+
 async function sendWhatsAppNotification({ name, subject, email, message }) {
   if (!WHATSAPP_TOKEN || !WHATSAPP_PHONE_NUMBER_ID || !WHATSAPP_RECIPIENT_NUMBER) {
     console.warn('WhatsApp not configured — skipping forward (message is still saved in Supabase).');
@@ -213,10 +227,10 @@ async function sendWhatsAppNotification({ name, subject, email, message }) {
         components: [{
           type: 'body',
           parameters: [
-            { type: 'text', text: name },
-            { type: 'text', text: subject || 'General Inquiry' },
-            { type: 'text', text: email },
-            { type: 'text', text: message.slice(0, 700) }
+            { type: 'text', text: sanitizeForTemplate(name) },
+            { type: 'text', text: sanitizeForTemplate(subject || 'General Inquiry') },
+            { type: 'text', text: sanitizeForTemplate(email) },
+            { type: 'text', text: sanitizeForTemplate(message.slice(0, 700)) }
           ]
         }]
       }
