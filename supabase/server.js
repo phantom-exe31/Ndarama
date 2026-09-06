@@ -211,30 +211,36 @@ async function sendWhatsAppNotification({ name, subject, email, message }) {
     return false;
   }
 
+  const payload = {
+    messaging_product: 'whatsapp',
+    to: WHATSAPP_RECIPIENT_NUMBER,
+    type: 'template',
+    template: {
+      name: WHATSAPP_TEMPLATE_NAME,
+      language: { code: WHATSAPP_TEMPLATE_LANG },
+      components: [{
+        type: 'body',
+        parameters: [
+          { type: 'text', text: sanitizeForTemplate(name) },
+          { type: 'text', text: sanitizeForTemplate(subject || 'General Inquiry') },
+          { type: 'text', text: sanitizeForTemplate(email) },
+          { type: 'text', text: sanitizeForTemplate(message.slice(0, 700)) }
+        ]
+      }]
+    }
+  };
+
+  // TEMP DEBUG — remove once the (#100) error is resolved
+  console.log('WhatsApp outgoing payload:', JSON.stringify(payload, null, 2));
+  console.log('WHATSAPP_PHONE_NUMBER_ID being used:', WHATSAPP_PHONE_NUMBER_ID);
+
   const response = await fetch(`https://graph.facebook.com/v20.0/${WHATSAPP_PHONE_NUMBER_ID}/messages`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${WHATSAPP_TOKEN}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      messaging_product: 'whatsapp',
-      to: WHATSAPP_RECIPIENT_NUMBER,
-      type: 'template',
-      template: {
-        name: WHATSAPP_TEMPLATE_NAME,
-        language: { code: WHATSAPP_TEMPLATE_LANG },
-        components: [{
-          type: 'body',
-          parameters: [
-            { type: 'text', text: sanitizeForTemplate(name) },
-            { type: 'text', text: sanitizeForTemplate(subject || 'General Inquiry') },
-            { type: 'text', text: sanitizeForTemplate(email) },
-            { type: 'text', text: sanitizeForTemplate(message.slice(0, 700)) }
-          ]
-        }]
-      }
-    })
+    body: JSON.stringify(payload)
   });
 
   const data = await response.json();
